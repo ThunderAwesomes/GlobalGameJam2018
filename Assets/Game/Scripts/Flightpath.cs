@@ -57,7 +57,15 @@ public sealed class Flightpath
 		LinkedListNode<Flightpath.Waypoint> next = current.Next;
 		while (next != null)
 		{
-			Debug.DrawLine(current.Value.Position, next.Value.Position, Color.green);
+			//GL.PushMatrix();
+			//mat.SetPass(0);
+			//GL.LoadOrtho();
+			GL.Begin(GL.LINES);
+			GL.Color(Color.red);
+			GL.Vertex(current.Value.Position);
+			GL.Vertex(next.Value.Position);
+			GL.End();
+			//GL.PopMatrix();
 			current = next;
 			next = current.Next;
 		}

@@ -19,6 +19,10 @@ public class VRController : MonoBehaviour
     private Transform _tip;
     [SerializeField]
     private float _castRadius = 0.02f;
+	[SerializeField]
+	private float _waypointDelta = 0.02f;
+
+	private float _nextWaypoint = 0f;
 
 
     private void OnDestroy()
@@ -50,6 +54,9 @@ public class VRController : MonoBehaviour
 
     private void Update()
     {
+
+		Vector3 previousPosition = transform.position;
+
         transform.position = OVRInput.GetLocalControllerPosition(_controllerType);
 		transform.rotation = OVRInput.GetLocalControllerRotation(_controllerType);
 
@@ -71,17 +78,32 @@ public class VRController : MonoBehaviour
         }
         _wasTriggerDown = _isTriggerDown;
 
-        if(_hasTarget)
+        if(_isTriggerDown && _hasTarget)
         {
-            UpdateFlightPath();
+            UpdateFlightPath(previousPosition, transform.position);
         }
     }
 
-    private void UpdateFlightPath()
-    {
-        
-    }
+	private void OnPostRender()
+	{
+		if (_hasTarget)
+		{
+			_activeFlightPath.DrawDebug();
+		}
+	}
 
+	private void UpdateFlightPath(Vector3 previous, Vector3 current)
+	{
+		Vector3 delta = previous - current;
+		float magnitude = Vector3.Magnitude(delta);
+		_nextWaypoint -= magnitude;
+
+		if(_nextWaypoint <= 0)
+		{
+			_nextWaypoint = _waypointDelta;
+			_activeFlightPath.AddPosition(current);
+		}
+	}
 
     private void OnTriggerPressed()
     {
@@ -91,9 +113,11 @@ public class VRController : MonoBehaviour
         if (Physics.SphereCast(ray, _castRadius,out raycastHit, 5, Layers.Directable)) 
         {
             _target = raycastHit.transform.GetComponent<IDirectable>();
+			_activeFlightPath = new Flightpath(_tip.position);
+			_target.flightpath = _activeFlightPath;
             _target.OnSelected();
             _hasTarget = true;
-        }
+		}
         else
         {
             _hasTarget = false;
@@ -107,7 +131,9 @@ public class VRController : MonoBehaviour
             _target.OnDeselected();
             _target = null;
             _hasTarget = false;
-        }
+			_activeFlightPath = null;
+
+		}
     }
 
 
