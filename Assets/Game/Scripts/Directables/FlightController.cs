@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Aeroplane), typeof(FlightpathRenderer))]
+[RequireComponent(typeof(Aeroplane), typeof(FlightpathRenderer), typeof(Rigidbody))]
 public class FlightController : MonoBehaviour, IDirectable
 {
 	// Helper struct to provide some useful precomputed info about the waypoint in relation to ourselves in this instant.
@@ -18,12 +18,13 @@ public class FlightController : MonoBehaviour, IDirectable
 	protected Flightpath _flightpath;
 	protected FlightpathRenderer _flightpathRenderer;
 	protected LinkedListNode<Flightpath.Waypoint> _currentWaypoint;
-	private Aeroplane _plane;
+	protected Aeroplane _plane;
+	protected Rigidbody _rb;
 
 	const bool _drawDebugInfo = true;
 
 	// Flight control tweakables
-	private float _lookAheadDistance = 40.0f;
+	private float _lookAheadDistance = 30.0f;
 
 	// IDirectable Implementation
 	public virtual Flightpath flightpath
@@ -34,7 +35,7 @@ public class FlightController : MonoBehaviour, IDirectable
 		}
 		set
 		{
-			if (_flightpath != value)
+			if (_flightpath != value && _flightpathRenderer != null)
 			{
 				_flightpathRenderer.SetFlightPath(_flightpath);
 			}
@@ -69,6 +70,7 @@ public class FlightController : MonoBehaviour, IDirectable
 			meshRenderer.material.color = Color.white;
 		}
 	}
+	// End IDirectable Implementations
 
 	protected WaypointInfo ComputeWaypointInfo(Flightpath.Waypoint waypoint)
 	{
@@ -78,6 +80,11 @@ public class FlightController : MonoBehaviour, IDirectable
 		info.localDirection = transform.InverseTransformDirection(info.worldDirection);
 		info.worldPosition = waypoint.Position;
 		return info;
+	}
+
+	protected Vector3 GetGravityDirection()
+	{
+		return Vector3.down;
 	}
 
 	protected bool IsWaypointInfront(WaypointInfo info)
@@ -90,27 +97,29 @@ public class FlightController : MonoBehaviour, IDirectable
 		return IsWaypointInfront(info) && (info.distance < _lookAheadDistance);
 	}
 
+	float GetSteeringInput(float angularDistance, float angularVelocity)
+	{
+		float result = Mathf.Clamp(angularDistance, -1.0f, 1.0f);
+
+		// Reduce steering if we're already moving towards the target.
+		if (Mathf.Sign(angularVelocity) == Mathf.Sign(angularDistance))
+		{
+			float distance = Mathf.Abs(angularDistance);
+			float speed = Mathf.Abs(angularVelocity);
+
+			float steeringMultiplier = Mathf.Clamp01((distance - speed) * 5);
+
+
+			result *= steeringMultiplier;
+		}
+
+		return result;
+	}
+
 	protected void AdjustForWaypoint(WaypointInfo info)
 	{
-		// Compute a left-right steering value.
-		float Steering = 0;
-		if (info.localDirection.z > 0)
-		{
-			// Waypoint is infront
-			Steering = Mathf.Clamp(info.localDirection.x, -1.0f, 1.0f);
-		}
-		else
-		{
-			// Waypoint is behind
-			Steering = Mathf.Sign(info.localDirection.x);
-		}
-
-
-		// Convert that to a roll and yaw input
-
-
-
-		_plane.yaw = Steering;
+		_plane.targetFacing = info.worldDirection;
+		_plane.targetUp = -GetGravityDirection();
 
 		// TODO: Adjust plane controls to fly towards waypoint
 		_plane.throttle = 1.0f;
@@ -124,6 +133,7 @@ public class FlightController : MonoBehaviour, IDirectable
 	private void Start()
 	{
 		_plane = GetComponent<Aeroplane>();
+		_rb = GetComponent<Rigidbody>();
 		_flightpathRenderer = GetComponent<FlightpathRenderer>();
 	}
 
@@ -165,6 +175,28 @@ public class FlightController : MonoBehaviour, IDirectable
 		if (_currentWaypoint != null)
 		{
 			Debug.DrawLine(transform.position, _currentWaypoint.Value.Position, Color.blue);
+		}
+	}
+
+	private float debugFloat1;
+
+	private void OnGUI()
+	{
+		if (_drawDebugInfo)
+		{
+			string DebugText = "";
+
+			DebugText += "Angular veocity Y: " + _rb.angularVelocity.y + "\n";
+
+			if (_currentWaypoint != null)
+			{
+				WaypointInfo info = ComputeWaypointInfo(_currentWaypoint.Value);
+				DebugText += "Direction X: " + info.localDirection.x + "\n";
+			}
+
+			DebugText += "debugFloat1: " + debugFloat1 + "\n";
+
+			GUILayout.Label(DebugText, GUI.skin.box);
 		}
 	}
 

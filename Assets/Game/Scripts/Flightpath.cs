@@ -15,6 +15,18 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 		{
 			Position = position;
 		}
+
+		public Waypoint(Vector3[] positions)
+		{
+			Vector3 summedPosition = Vector3.zero;
+			for (int i = 0; i < positions.Length; i++)
+			{
+				summedPosition += positions[i];
+			}
+			Vector3 averagedPosition = summedPosition / positions.Length;
+
+			Position = averagedPosition;
+		}
 	}
 
 
@@ -35,16 +47,14 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	public void AddPosition(Vector3 position)
 	{
 		_sourcePoints.Add(position);
-		// TODO: Smoothing
 
-		Vector3 summedPosition = Vector3.zero;
 		int iterations = smoothing < _sourcePoints.Count ? smoothing : _sourcePoints.Count;
-		for (int i = 0; i < iterations; i++)
+		Vector3[] points = new Vector3[iterations];
+		for (int i = 0; i < points.Length; i++)
 		{
-			summedPosition += _sourcePoints[_sourcePoints.Count - 1 - i];
+			points[i] = _sourcePoints[_sourcePoints.Count - 1 - i];
 		}
-		Vector3 averagedPosition = summedPosition / iterations;
-		Waypoint waypoint = new Waypoint(averagedPosition);
+		Waypoint waypoint = new Waypoint(points);
 		_waypoints.AddLast(waypoint);
 	}
 
