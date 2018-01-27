@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flightpath : MonoBehaviour {
+public sealed class Flightpath : MonoBehaviour
+{
+	public struct Waypoint
+	{
+		Vector3 Position;
 
-	// Use this for initialization
-	void Start () {
-		
+		public Waypoint(Vector3 position)
+		{
+			Position = position;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	private LinkedList<Waypoint> _waypoints = new LinkedList<Waypoint>();
+
+	public Flightpath(Flightpath.Waypoint initialWaypoint)
+	{
+		_waypoints.AddFirst(initialWaypoint);
 	}
 }
