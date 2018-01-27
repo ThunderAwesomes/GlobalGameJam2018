@@ -51,8 +51,9 @@ public class VRController : MonoBehaviour
     private void Update()
     {
         transform.position = OVRInput.GetLocalControllerPosition(_controllerType);
-		transform.position += _anchor.position;
 		transform.rotation = OVRInput.GetLocalControllerRotation(_controllerType);
+
+		transform.position += _anchor.position;
 		transform.rotation *= _anchor.rotation;
 
         _isTriggerDown = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, _controllerType);
