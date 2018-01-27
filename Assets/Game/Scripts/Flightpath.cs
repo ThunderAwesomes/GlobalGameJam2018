@@ -4,11 +4,11 @@ using UnityEngine;
 
 public sealed class Flightpath
 {
-	const int smoothing = 4;
+	const int smoothing = 5;
 
 	public struct Waypoint
 	{
-		Vector3 Position;
+		public Vector3 Position;
 
 		public Waypoint(Vector3 position)
 		{
@@ -29,7 +29,15 @@ public sealed class Flightpath
 	{
 		_sourcePoints.Add(position);
 		// TODO: Smoothing
-		Waypoint waypoint = new Waypoint(position);
+
+		Vector3 summedPosition = Vector3.zero;
+		int iterations = smoothing < _sourcePoints.Count ? smoothing : _sourcePoints.Count;
+		for (int i = 0; i < iterations; i++)
+		{
+			summedPosition += _sourcePoints[_sourcePoints.Count - 1 - i];
+		}
+		Vector3 averagedPosition = summedPosition / iterations;
+		Waypoint waypoint = new Waypoint(averagedPosition);
 		_waypoints.AddLast(waypoint);
 	}
 
