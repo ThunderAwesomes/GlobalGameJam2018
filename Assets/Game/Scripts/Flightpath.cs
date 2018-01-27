@@ -6,7 +6,12 @@ public sealed class Flightpath : MonoBehaviour
 {
 	public struct Waypoint
 	{
-		Vector3 position;
+		Vector3 Position;
+
+		public Waypoint(Vector3 position)
+		{
+			Position = position;
+		}
 	}
 
 	private LinkedList<Waypoint> _waypoints = new LinkedList<Waypoint>();

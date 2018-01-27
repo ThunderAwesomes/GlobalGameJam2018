@@ -2,15 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Aeroplane : MonoBehaviour {
+public class Aeroplane : MonoBehaviour
+{
+	private float _yaw;
+	private float _pitch;
+	private float _roll;
+	private float _throttle;
 
-	// Use this for initialization
-	void Start () {
-		
+	public float yaw
+	{
+		get { return _yaw; }
+		set { _yaw = Mathf.Clamp(value, -1.0f, 1.0f); }
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public float pitch
+	{
+		get { return _pitch; }
+		set { _pitch = Mathf.Clamp(value, -1.0f, 1.0f); }
+	}
+	public float roll
+	{
+		get { return _roll; }
+		set { _roll = Mathf.Clamp(value, -1.0f, 1.0f); }
+	}
+	public float throttle
+	{
+		get { return _throttle; }
+		set { _throttle = Mathf.Clamp(value, 0.0f, 1.0f); }
+	}
+
+	[SerializeField]
+	protected float thrustPower;
+	[SerializeField]
+	protected float mass;
+	[SerializeField]
+	protected float drag;
+	[SerializeField]
+	protected float manouverability;
+
+	private Rigidbody rb;
+
+	protected void Start()
+	{
+		rb = GetComponent<Rigidbody>();
+	}
+
+	protected void FixedUpdate()
+	{
+		// Engine force
+		rb.AddForce(transform.forward * (thrustPower * throttle), ForceMode.Force);
+
+		// Temp until we have some lift and hsit.
+		rb.useGravity = false;
 	}
 }
