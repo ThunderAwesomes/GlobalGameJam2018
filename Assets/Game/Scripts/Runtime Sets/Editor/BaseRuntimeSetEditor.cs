@@ -12,7 +12,12 @@ public class BaseRuntimeSetEditor : Editor
 
 	private void OnEnable()
 	{
-		_instances = serializedObject.FindProperty(INSTANCES_FIELD_NAME[0]);
+		_instances = serializedObject.FindProperty(ignoredFields[0]);
+	}
+
+	public virtual string[] ignoredFields
+	{
+		get { return INSTANCES_FIELD_NAME; } 
 	}
 
 	public override void OnInspectorGUI()
@@ -35,7 +40,7 @@ public class BaseRuntimeSetEditor : Editor
 				}
 				EditorGUI.indentLevel--;
 			}
-			Editor.DrawPropertiesExcluding(serializedObject, INSTANCES_FIELD_NAME);
+			Editor.DrawPropertiesExcluding(serializedObject, ignoredFields);
 		}
 		if (EditorGUI.EndChangeCheck())
 		{
