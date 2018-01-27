@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(BaseRuntimeSet), editorForChildClasses:true)]
+[CustomEditor(typeof(BaseRuntimeSet), editorForChildClasses: true)]
 public class BaseRuntimeSetEditor : Editor
 {
 
@@ -17,22 +17,29 @@ public class BaseRuntimeSetEditor : Editor
 
 	public override void OnInspectorGUI()
 	{
-		_instances.isExpanded = EditorGUILayout.Foldout(_instances.isExpanded, _instances.displayName);
-		if (_instances.isExpanded)
+		EditorGUI.BeginChangeCheck();
 		{
-			EditorGUI.indentLevel++;
-			if (!serializedObject.isEditingMultipleObjects)
+			_instances.isExpanded = EditorGUILayout.Foldout(_instances.isExpanded, _instances.displayName);
+			if (_instances.isExpanded)
 			{
-				for (int i = 0; i < _instances.arraySize; i++)
+				EditorGUI.indentLevel++;
+				if (!serializedObject.isEditingMultipleObjects)
 				{
-					SerializedProperty element = _instances.GetArrayElementAtIndex(i);
-					Object instanceValue = element.objectReferenceValue;
-					BaseRuntimeSet runtimeSet = (BaseRuntimeSet)target;
-					EditorGUILayout.ObjectField(i.ToString(), instanceValue, runtimeSet.setType, true);
+					for (int i = 0; i < _instances.arraySize; i++)
+					{
+						SerializedProperty element = _instances.GetArrayElementAtIndex(i);
+						Object instanceValue = element.objectReferenceValue;
+						BaseRuntimeSet runtimeSet = (BaseRuntimeSet)target;
+						EditorGUILayout.ObjectField(i.ToString(), instanceValue, runtimeSet.setType, true);
+					}
 				}
+				EditorGUI.indentLevel--;
 			}
-			EditorGUI.indentLevel--;
+			Editor.DrawPropertiesExcluding(serializedObject, INSTANCES_FIELD_NAME);
 		}
-		Editor.DrawPropertiesExcluding(serializedObject, INSTANCES_FIELD_NAME);
+		if (EditorGUI.EndChangeCheck())
+		{
+			serializedObject.ApplyModifiedProperties();
+		}
 	}
 }
