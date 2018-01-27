@@ -49,6 +49,7 @@ public class Aeroplane : MonoBehaviour
 		rb = GetComponent<Rigidbody>();
 		rb.mass = mass;
 		rb.drag = drag;
+		//rb.useGravity = false;
 		rb.WakeUp();
 	}
 
@@ -58,7 +59,6 @@ public class Aeroplane : MonoBehaviour
 		Vector3 force = transform.forward * (thrustPower * throttle);
 		rb.AddForce(force, ForceMode.Force);
 
-		// Temp until we have some lift and hsit.
-		rb.useGravity = false;
+		
 	}
 }

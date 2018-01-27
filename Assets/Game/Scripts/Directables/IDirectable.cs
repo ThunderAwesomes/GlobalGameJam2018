@@ -4,7 +4,9 @@ using UnityEngine;
 
 public interface IDirectable 
 {
-    void OnSelected();
 	Flightpath flightpath { get; set; }
+
+	void OnHover();
+	void OnSelected();
 	void OnDeselected();
 }
