@@ -10,7 +10,7 @@ public class BaseRuntimeSetEditor : Editor
 	private static readonly string[] INSTANCES_FIELD_NAME = new[] { "_instances", "m_Script" };
 	private SerializedProperty _instances;
 
-	private void OnEnable()
+	protected virtual void OnEnable()
 	{
 		_instances = serializedObject.FindProperty(ignoredFields[0]);
 	}

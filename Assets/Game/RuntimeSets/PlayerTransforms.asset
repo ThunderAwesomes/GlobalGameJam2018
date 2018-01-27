@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Name: Player Transform Runtime Set
   m_EditorClassIdentifier: 
   _instances: []
+  _startingScale: 145.9
+  _startingPosition: {x: 0, y: 0, z: 0}
