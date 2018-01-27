@@ -33,7 +33,10 @@ public class FlightController : MonoBehaviour, IDirectable
 		set
 		{
 			_flightpath = value;
-			_currentWaypoint = _flightpath.GetFirstWaypoint();
+			if (_flightpath != null)
+			{
+				_currentWaypoint = _flightpath.GetFirstWaypoint();
+			}
 		}
 	}
 
