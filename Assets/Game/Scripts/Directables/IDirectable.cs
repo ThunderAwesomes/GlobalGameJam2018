@@ -5,6 +5,6 @@ using UnityEngine;
 public interface IDirectable 
 {
     void OnSelected();
-    void SetFlightPath(Flightpath flightPath);
-    void OnDeselected();
+	Flightpath flightpath { get; set; }
+	void OnDeselected();
 }

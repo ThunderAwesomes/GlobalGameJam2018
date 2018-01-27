@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Aeroplane))]
-public class FlightController : MonoBehaviour
+public class FlightController : MonoBehaviour, IDirectable
 {
 	protected Flightpath _flightpath;
 	protected LinkedListNode<Flightpath.Waypoint> _currentWaypoint;
 
 	private Aeroplane plane;
 
-	public Flightpath flightpath
+	// IDirectable Implementation
+	public virtual Flightpath flightpath
 	{
 		get
 		{
@@ -20,6 +21,16 @@ public class FlightController : MonoBehaviour
 		{
 			_flightpath = value;
 		}
+	}
+
+	public virtual void OnSelected()
+	{
+
+	}
+
+	public virtual void OnDeselected()
+	{
+
 	}
 
 	protected bool ShouldAdvanceWaypoint()
