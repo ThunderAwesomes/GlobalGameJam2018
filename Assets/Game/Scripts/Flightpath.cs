@@ -38,6 +38,7 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	private List<Vector3> _sourcePoints = new List<Vector3>();
 	private LinkedList<Waypoint> _waypoints = new LinkedList<Waypoint>();
 	public bool finalized { get; set; }
+	public bool consumed { get; set; }
 
 	public Flightpath(Vector3 startPosition)
 	{

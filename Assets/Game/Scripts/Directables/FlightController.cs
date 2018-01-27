@@ -81,7 +81,9 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	public void EnterHoldingPattern()
 	{
+		flightpath.consumed = true;
 		flightpath = null;
+		_flightpathRenderer.ClearFlightPath();
 		_holdingPatternLocation = transform.position;
 	}
 
