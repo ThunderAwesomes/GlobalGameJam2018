@@ -20,6 +20,7 @@ public class VRController : MonoBehaviour
     [SerializeField]
     private float _castRadius = 0.02f;
 
+
     private void OnDestroy()
     {
         OnControllerDisconnected();
@@ -68,10 +69,14 @@ public class VRController : MonoBehaviour
 
         if(_hasTarget)
         {
-            UpdateTarget();
+            UpdateFlightPath();
         }
     }
 
+    private void UpdateFlightPath()
+    {
+        
+    }
 
 
     private void OnTriggerPressed()

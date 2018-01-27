@@ -6,10 +6,10 @@ using UnityEngine;
 public class GameMode : MonoBehaviour
 {
     [SerializeField]
-    private VRInputManager _inputManagerPrefab;
+    private OVRManager _ovrManagerPrefab;
 
 
-    private VRInputManager _inputManager;
+    private OVRManager _ovrManager;
 
     private void Awake()
     {
@@ -24,17 +24,17 @@ public class GameMode : MonoBehaviour
 
     public void EndMode()
     {
-        if(_inputManager != null)
+        if(_ovrManager != null)
         {
-            Destroy(_inputManager);
+            Destroy(_ovrManager);
         }
     }
 
     private void CreateInputManager()
     {
-        _inputManager = Instantiate<VRInputManager>(_inputManagerPrefab);
-        _inputManager.transform.SetParent(transform);
-        _inputManager.name = _inputManagerPrefab.name;
-        _inputManager.transform.localPosition = Vector3.zero;
+        _ovrManager = Instantiate<OVRManager>(_ovrManagerPrefab);
+        _ovrManager.transform.SetParent(transform);
+        _ovrManager.name = _ovrManagerPrefab.name;
+        _ovrManager.transform.localPosition = Vector3.zero;
     }
 }
