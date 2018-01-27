@@ -71,7 +71,7 @@ public class VRController : MonoBehaviour
 	private void Update()
 	{
 
-		Vector3 previousPosition = transform.position;
+		Vector3 previousPosition = _tip.position;
 
 		transform.position = OVRInput.GetLocalControllerPosition(_controllerType);
 		transform.rotation = OVRInput.GetLocalControllerRotation(_controllerType);
@@ -96,7 +96,7 @@ public class VRController : MonoBehaviour
 
 		if (_isTriggerDown && _selected != null)
 		{
-			UpdateFlightPath(previousPosition, transform.position);
+			UpdateFlightPath(previousPosition, _tip.position);
 		}
 	}
 
