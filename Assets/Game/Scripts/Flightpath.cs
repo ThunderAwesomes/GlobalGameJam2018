@@ -45,4 +45,21 @@ public sealed class Flightpath
 	{
 		return _waypoints.First;
 	}
+
+	public void DrawDebug()
+	{
+		for (int i = 1; i < _sourcePoints.Count; i++)
+		{
+			Debug.DrawLine(_sourcePoints[i - 1], _sourcePoints[i], Color.red);
+		}
+
+		LinkedListNode<Flightpath.Waypoint> current = GetFirstWaypoint();
+		LinkedListNode<Flightpath.Waypoint> next = current.Next;
+		while (next != null)
+		{
+			Debug.DrawLine(current.Value.Position, next.Value.Position, Color.green);
+			current = next;
+			next = current.Next;
+		}
+	}
 }
