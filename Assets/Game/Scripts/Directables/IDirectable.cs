@@ -6,7 +6,5 @@ public interface IDirectable
 {
 	Flightpath flightpath { get; set; }
 
-	void OnHover();
-	void OnSelected();
-	void OnDeselected();
+	void OnSelectionStateChanged(VRController.SelectionState state);
 }
