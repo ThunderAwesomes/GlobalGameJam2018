@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Name: PlayerTransforms
   m_EditorClassIdentifier: 
   _instances: []
-  _startingHeight: 0
-  _startingScale: 0
+  _startingScale: 91.8
   _startingPosition: {x: 0, y: 0, z: 0}

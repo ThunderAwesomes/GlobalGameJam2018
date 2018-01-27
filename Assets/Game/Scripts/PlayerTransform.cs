@@ -14,6 +14,7 @@ public class PlayerTransform : MonoBehaviour
 		get { return _trackerAnchor.position.y * transform.lossyScale.y; }
 	}
 
+
 	private void OnEnable()
 	{
 		_runtimeSet.Add(this);

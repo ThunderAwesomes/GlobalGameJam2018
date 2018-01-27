@@ -37,6 +37,19 @@ public abstract class RuntimeSet<T> : BaseRuntimeSet
 	}
 
 	/// <summary>
+	/// Returns the first instance or null
+	/// </summary>
+	/// <returns></returns>
+	public T FirstOrDefault()
+	{
+		if(_instances.Count > 0)
+		{
+			return _instances[0];
+		}
+		return default(T);
+	}
+
+	/// <summary>
 	/// Invoked when we first access this runtime set. Always call base
 	/// </summary>
 	protected virtual void OnEnable()
