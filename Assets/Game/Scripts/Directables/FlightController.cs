@@ -36,40 +36,45 @@ public class FlightController : MonoBehaviour, IDirectable
 		}
 		set
 		{
-			if (_flightpath != value && _flightpathRenderer != null)
+			if (_flightpath != value)
 			{
 				_flightpath = value;
 				_flightpathRenderer.SetFlightPath(_flightpath);
 			}
-		
+
 			if (_flightpath != null)
 			{
 				_currentWaypoint = _flightpath.GetFirstWaypoint();
 			}
+			else
+			{
+				_currentWaypoint = null;
+			}
 		}
 	}
 
-	public virtual void OnHover()
+	public void OnSelectionStateChanged(VRController.SelectionState state)
 	{
-		foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
+		switch (state)
 		{
-			meshRenderer.material.color = Color.cyan;
-		}
-	}
-
-	public virtual void OnSelected()
-	{
-		foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
-		{
-			meshRenderer.material.color = Color.blue;
-		}
-	}
-
-	public virtual void OnDeselected()
-	{
-		foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
-		{
-			meshRenderer.material.color = Color.white;
+			case VRController.SelectionState.Hover:
+				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
+				{
+					meshRenderer.material.color = Color.cyan;
+				}
+				break;
+			case VRController.SelectionState.Select:
+				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
+				{
+					meshRenderer.material.color = Color.blue;
+				}
+				break;
+			case VRController.SelectionState.None:
+				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
+				{
+					meshRenderer.material.color = Color.white;
+				}
+				break;
 		}
 	}
 	// End IDirectable Implementations

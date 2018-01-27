@@ -5,13 +5,21 @@ using UnityEngine;
 
 public class VRController : MonoBehaviour
 {
+	public enum SelectionState
+	{
+		None,
+		Hover,
+		Select,
+	}
+
+
 	private OVRInput.Controller _controllerType;
 
 	private bool _isTriggerDown;
 	private bool _wasTriggerDown;
 
 	private IDirectable _selected;
-	private IDirectable _hovered;
+	private IDirectable _hoverTarget;
 
 
 
@@ -63,7 +71,7 @@ public class VRController : MonoBehaviour
 	private void Update()
 	{
 
-		Vector3 previousPosition = transform.position;
+		Vector3 previousPosition = _tip.position;
 
 		transform.position = OVRInput.GetLocalControllerPosition(_controllerType);
 		transform.rotation = OVRInput.GetLocalControllerRotation(_controllerType);
@@ -88,14 +96,14 @@ public class VRController : MonoBehaviour
 
 		if (_isTriggerDown && _selected != null)
 		{
-			UpdateFlightPath(previousPosition, transform.position);
+			UpdateFlightPath(previousPosition, _tip.position);
 		}
 	}
 
 	private void UpdateFlightPath(Vector3 previous, Vector3 current)
 	{
 		Vector3 delta = previous - current;
-		float magnitude = Vector3.Magnitude(delta) / _playerTransformRuntimeSet.scale;
+		float magnitude = Vector3.Magnitude(delta) * _playerTransformRuntimeSet.scale;
 		_nextWaypoint -= magnitude;
 
 		if (_nextWaypoint <= 0)
@@ -107,33 +115,33 @@ public class VRController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		_hovered = other.GetComponentInParent<IDirectable>();
-		if (_hovered != null && !_isTriggerDown)
+		_hoverTarget = other.GetComponentInParent<IDirectable>();
+		if (_hoverTarget != null && !_isTriggerDown)
 		{
-			_hovered.OnHover();
+			_hoverTarget.OnSelectionStateChanged(SelectionState.Hover);
 		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (_hovered != null)
+		if (_hoverTarget != null)
 		{
 			if (!_isTriggerDown)
 			{
-				_hovered.OnDeselected();
+				_hoverTarget.OnSelectionStateChanged(SelectionState.None);
 			}
-			_hovered = null;
+			_hoverTarget = null;
 		}
 	}
 
 	private void OnTriggerPressed()
 	{
-		if (_hovered != null)
+		if (_hoverTarget != null)
 		{
-			_selected = _hovered;
+			_selected = _hoverTarget;
 			_activeFlightPath = new Flightpath(_tip.position);
 			_selected.flightpath = _activeFlightPath;
-			_selected.OnSelected();
+			_selected.OnSelectionStateChanged(SelectionState.Select);
 		}
 	}
 
@@ -142,13 +150,13 @@ public class VRController : MonoBehaviour
 	{
 		if (_selected != null)
 		{
-			_selected.OnDeselected();
+			_selected.OnSelectionStateChanged(SelectionState.None);
 			_selected = null;
 			_activeFlightPath = null;
 
-			if (_hovered != null)
+			if (_hoverTarget != null)
 			{
-				_hovered.OnSelected();
+				_hoverTarget.OnSelectionStateChanged(SelectionState.Hover);
 			}
 		}
 
