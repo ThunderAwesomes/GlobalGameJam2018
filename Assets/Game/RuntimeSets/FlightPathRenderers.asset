@@ -9,6 +9,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c45570fe1af3b54a8527c069d7659fa, type: 3}
-  m_Name: New Flight Path Renderer Runtime Set
+  m_Name: FlightPathRenderers
   m_EditorClassIdentifier: 
   _instances: []

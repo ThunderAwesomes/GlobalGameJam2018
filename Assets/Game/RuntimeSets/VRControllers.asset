@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1b561eb722ab6b4f85509e7fa341d55, type: 3}
-  m_Name: VRControllerRuntimeSet
+  m_Name: VRControllers
   m_EditorClassIdentifier: 
   _instances: []
   _sphereCastRadius: 2.04
