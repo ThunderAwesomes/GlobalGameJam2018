@@ -148,11 +148,10 @@ public class VRController : MonoBehaviour
 			_isAwaitingEscape = true;
 			_selected = _hoverTarget;
 			_activeFlightPath = new Flightpath(_tip.position);
-			_selected.flightpath = _activeFlightPath;
+			_selected.SetFlightpath(_activeFlightPath);
 			_selected.OnSelectionStateChanged(SelectionState.Select);
 		}
 	}
-
 
 	private void onTriggerReleased()
 	{

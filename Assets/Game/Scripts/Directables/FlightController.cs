@@ -15,6 +15,14 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	}
 
+	protected enum NavigationState
+	{
+		holdingPattern,
+		followingFlightPath,
+		landing
+	}
+
+	protected NavigationState _navState;
 	protected Flightpath _flightpath;
 	protected Vector3 _holdingPatternLocation;
 	protected FlightpathRenderer _flightpathRenderer;
@@ -34,22 +42,27 @@ public class FlightController : MonoBehaviour, IDirectable
 		{
 			return _flightpath;
 		}
-		set
-		{
-			if (_flightpath != value)
-			{
-				_flightpath = value;
-				_flightpathRenderer.SetFlightPath(_flightpath);
-			}
+	}
 
-			if (_flightpath != null)
-			{
-				_currentWaypoint = _flightpath.GetFirstWaypoint();
-			}
-			else
-			{
-				_currentWaypoint = null;
-			}
+	public void SetFlightpath(Flightpath flightpath)
+	{
+		if (_flightpath != flightpath)
+		{
+			_flightpath = flightpath;
+			_flightpathRenderer.SetFlightPath(_flightpath);
+			_navState = NavigationState.followingFlightPath;
+		}
+
+		if (_flightpath != null)
+		{
+			_currentWaypoint = _flightpath.GetFirstWaypoint();
+		}
+		else
+		{
+			_flightpathRenderer.ClearFlightPath();
+			_currentWaypoint = null;
+			_navState = NavigationState.holdingPattern;
+			_holdingPatternLocation = transform.position;
 		}
 	}
 
@@ -79,14 +92,6 @@ public class FlightController : MonoBehaviour, IDirectable
 	}
 	// End IDirectable Implementations
 
-	public void EnterHoldingPattern()
-	{
-		flightpath.consumed = true;
-		flightpath = null;
-		_flightpathRenderer.ClearFlightPath();
-		_holdingPatternLocation = transform.position;
-	}
-
 	protected WaypointInfo ComputeWaypointInfo(Flightpath.Waypoint waypoint)
 	{
 		WaypointInfo info;
@@ -110,25 +115,6 @@ public class FlightController : MonoBehaviour, IDirectable
 	protected bool ShouldAdvanceWaypoint(WaypointInfo info)
 	{
 		return IsWaypointInfront(info) && (info.distance < _lookAheadDistance);
-	}
-
-	float GetSteeringInput(float angularDistance, float angularVelocity)
-	{
-		float result = Mathf.Clamp(angularDistance, -1.0f, 1.0f);
-
-		// Reduce steering if we're already moving towards the target.
-		if (Mathf.Sign(angularVelocity) == Mathf.Sign(angularDistance))
-		{
-			float distance = Mathf.Abs(angularDistance);
-			float speed = Mathf.Abs(angularVelocity);
-
-			float steeringMultiplier = Mathf.Clamp01((distance - speed) * 5);
-
-
-			result *= steeringMultiplier;
-		}
-
-		return result;
 	}
 
 	protected void AdjustForWaypoint(WaypointInfo info)
@@ -158,32 +144,38 @@ public class FlightController : MonoBehaviour, IDirectable
 		if (_drawDebugInfo)
 			DrawDebugInfo();
 
-		if (flightpath == null || _currentWaypoint == null)
+		if (_navState == NavigationState.holdingPattern)
 		{
 			AdjustForHoldingPattern();
-			return;
 		}
-
-		WaypointInfo info = ComputeWaypointInfo(_currentWaypoint.Value);
-
-		while (ShouldAdvanceWaypoint(info))
+		else if (_navState == NavigationState.landing)
 		{
-			LinkedListNode<Flightpath.Waypoint> nextWaypoint = _currentWaypoint.Next;
+			throw new System.NotImplementedException();
+		}
+		else
+		{
+			WaypointInfo info = ComputeWaypointInfo(_currentWaypoint.Value);
 
-			if (nextWaypoint == null)
+			while (ShouldAdvanceWaypoint(info))
 			{
-				if (_flightpath.finalized)
+				LinkedListNode<Flightpath.Waypoint> nextWaypoint = _currentWaypoint.Next;
+
+				if (nextWaypoint == null)
 				{
-					EnterHoldingPattern();
+					if (_flightpath.finalized)
+					{
+					  flightpath.consumed = true;
+						SetFlightpath(null);
+					}
+					return;
 				}
-				return;
+
+				_currentWaypoint = nextWaypoint;
+				info = ComputeWaypointInfo(_currentWaypoint.Value);
 			}
 
-			_currentWaypoint = nextWaypoint;
-			info = ComputeWaypointInfo(_currentWaypoint.Value);
+			AdjustForWaypoint(info);
 		}
-
-		AdjustForWaypoint(info);
 	}
 
 	private void DrawDebugInfo()

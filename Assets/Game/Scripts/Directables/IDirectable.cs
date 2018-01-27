@@ -6,7 +6,8 @@ public interface IDirectable
 {
 	GameObject gameObject { get; }
 	Transform transform { get; }
-	Flightpath flightpath { get; set; }
+	Flightpath flightpath { get; }
+	void SetFlightpath(Flightpath flightpath);
 
 	void OnSelectionStateChanged(VRController.SelectionState state);
 }

@@ -43,6 +43,7 @@ public class Aeroplane : MonoBehaviour
 
 	private Rigidbody _rb;
 
+	Vector3 angularAcceleration;
 
 	protected void Start()
 	{
