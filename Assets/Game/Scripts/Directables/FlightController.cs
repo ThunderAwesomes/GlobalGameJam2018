@@ -9,8 +9,10 @@ public class FlightController : MonoBehaviour, IDirectable
 	protected struct WaypointInfo
 	{
 		public float distance;
-		public Vector3 direction;
-		public Vector3 position;
+		public Vector3 worldDirection;
+		public Vector3 localDirection;
+		public Vector3 worldPosition;
+		
 	}
 
 	protected Flightpath _flightpath;
@@ -21,7 +23,7 @@ public class FlightController : MonoBehaviour, IDirectable
 	const bool _drawDebugInfo = true;
 
 	// Flight control tweakables
-	private float lookAheadDistance = 20.0f;
+	private float lookAheadDistance = 40.0f;
 
 	// IDirectable Implementation
 	public virtual Flightpath flightpath
@@ -68,23 +70,44 @@ public class FlightController : MonoBehaviour, IDirectable
 	{
 		WaypointInfo info;
 		info.distance = Vector3.Distance(transform.position, waypoint.Position);
-		info.direction = Vector3.Normalize(transform.position - waypoint.Position);
-		info.position = waypoint.Position;
+		info.worldDirection = Vector3.Normalize(waypoint.Position - transform.position);
+		info.localDirection = transform.InverseTransformDirection(info.worldDirection);
+		info.worldPosition = waypoint.Position;
 		return info;
 	}
 
 	protected bool IsWaypointInfront(WaypointInfo info)
 	{
-		return Vector3.Dot(info.direction, transform.forward) > 0.2;
+		return Vector3.Dot(info.worldDirection, transform.forward) > 0.2;
 	}
 
 	protected bool ShouldAdvanceWaypoint(WaypointInfo info)
 	{
-		return IsWaypointInfront(info) || (info.distance < lookAheadDistance);
+		return IsWaypointInfront(info) && (info.distance < lookAheadDistance);
 	}
 
 	protected void AdjustForWaypoint(WaypointInfo info)
 	{
+		// Compute a left-right steering value.
+		float Steering = 0;
+		if (info.localDirection.z > 0)
+		{
+			// Waypoint is infront
+			Steering = Mathf.Clamp(info.localDirection.x, -1.0f, 1.0f);
+		}
+		else
+		{
+			// Waypoint is behind
+			Steering = Mathf.Sign(info.localDirection.x);
+		}
+
+
+		// Convert that to a roll and yaw input
+
+
+
+		plane.yaw = Steering;
+
 		// TODO: Adjust plane controls to fly towards waypoint
 		plane.throttle = 1.0f;
 	}

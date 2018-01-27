@@ -34,13 +34,15 @@ public class Aeroplane : MonoBehaviour
 	}
 
 	[SerializeField]
-	protected float thrustPower;
+	protected float thrustPower = 5000.0f;
 	[SerializeField]
-	protected float mass;
+	protected float mass = 1000.0f;
 	[SerializeField]
-	protected float drag;
+	protected Vector3 axialDragCoefficients = new Vector3(0.5f, 0.8f, 0.05f); // Axial drag coefficient multiplied by area
 	[SerializeField]
-	protected float manouverability;
+	protected float angularDrag = 0.1f;
+	[SerializeField]
+	protected float manouverability = 1000.0f;
 
 	private Rigidbody rb;
 
@@ -48,9 +50,20 @@ public class Aeroplane : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody>();
 		rb.mass = mass;
-		rb.drag = drag;
-		//rb.useGravity = false;
+		rb.drag = 0.0f; // We'll calculate the drag forces ourselves.
+		rb.angularDrag = angularDrag;
+		rb.useGravity = false;
 		rb.WakeUp();
+	}
+
+	Vector3 GetDrag()
+	{
+		float airDensity = 7.0f;
+
+		// You'd think 'oh just multiply the velocity by itself', but you'd be wrong. Then you get negative values going positive and shit hits the fan.
+		Vector3 localVelocitySquared = transform.InverseTransformDirection(rb.velocity.normalized) * rb.velocity.magnitude * rb.velocity.magnitude;
+
+		return -0.5f * airDensity * Vector3.Scale(localVelocitySquared, axialDragCoefficients);
 	}
 
 	protected void FixedUpdate()
@@ -59,6 +72,10 @@ public class Aeroplane : MonoBehaviour
 		Vector3 force = transform.forward * (thrustPower * throttle);
 		rb.AddForce(force, ForceMode.Force);
 
-		
+		// Steering
+		rb.AddRelativeTorque(new Vector3(roll, yaw, pitch) * manouverability, ForceMode.Force);
+
+		// Drag
+		rb.AddRelativeForce(GetDrag(), ForceMode.Force);
 	}
 }
