@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4812787698136406}
   - component: {fileID: 114625628400572932}
-  - component: {fileID: 114811384399775592}
   m_Layer: 0
   m_Name: OVRCameraRig
   m_TagString: Untagged
@@ -36,24 +35,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4685111175374080}
+  - component: {fileID: 114833744952406860}
   m_Layer: 0
   m_Name: RightHandAnchor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1568939913569990
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4902231007230630}
-  - component: {fileID: 114896490822994626}
-  m_Layer: 0
-  m_Name: OVR Controllers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +69,7 @@ GameObject:
   - component: {fileID: 4840056026188030}
   - component: {fileID: 114947983320856638}
   m_Layer: 0
-  m_Name: '[Manager] VR Input'
+  m_Name: '[Manager] OVR'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,6 +115,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4852617675072052}
+  - component: {fileID: 114872343326845682}
   m_Layer: 0
   m_Name: LeftHandAnchor
   m_TagString: Untagged
@@ -239,7 +224,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
-  - {fileID: 4902231007230630}
   - {fileID: 4812787698136406}
   m_Father: {fileID: 4840056026188030}
   m_RootOrder: 0
@@ -295,7 +279,7 @@ Transform:
   m_Children:
   - {fileID: 4329880892229732}
   m_Father: {fileID: 4468733447161642}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4840056026188030
 Transform:
@@ -303,7 +287,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1657136018369322}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -324,19 +308,6 @@ Transform:
   m_Father: {fileID: 4329880892229732}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4902231007230630
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1568939913569990}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
-  m_Children: []
-  m_Father: {fileID: 4468733447161642}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &20677596602552936
 Camera:
   m_ObjectHideFlags: 1
@@ -355,7 +326,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 96.016045
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -391,7 +362,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 1000
-  field of view: 90
+  field of view: 96.016045
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -427,7 +398,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 96.016045
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -465,59 +436,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usePerEyeCameras: 0
   useFixedUpdateForTracking: 0
---- !u!114 &114811384399775592
+--- !u!114 &114833744952406860
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1047473273114716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e933e81d3c20c74ea6fdc708a67e3a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  queueAhead: 1
-  useRecommendedMSAALevel: 0
-  enableAdaptiveResolution: 0
-  minRenderScale: 0.7
-  maxRenderScale: 1
-  expandMixedRealityCapturePropertySheet: 0
-  enableMixedReality: 0
-  compositionMethod: 0
-  extraHiddenLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  capturingCameraDevice: 0
-  flipCameraFrameHorizontally: 0
-  flipCameraFrameVertically: 0
-  handPoseStateLatency: 0
-  sandwichCompositionRenderLatency: 0
-  sandwichCompositionBufferedFrames: 8
-  chromaKeyColor: {r: 0, g: 1, b: 0, a: 1}
-  chromaKeySimilarity: 0.6
-  chromaKeySmoothRange: 0.03
-  chromaKeySpillRange: 0.06
-  useDynamicLighting: 0
-  depthQuality: 1
-  dynamicLightingSmoothFactor: 8
-  dynamicLightingDepthVariationClampingValue: 0.001
-  virtualGreenScreenType: 0
-  virtualGreenScreenTopY: 10
-  virtualGreenScreenBottomY: -10
-  virtualGreenScreenApplyDepthCulling: 0
-  virtualGreenScreenDepthTolerance: 0.2
-  _trackingOriginType: 0
-  usePositionTracking: 1
-  useRotationTracking: 1
-  useIPDInPositionTracking: 1
-  resetTrackerOnLoad: 0
-  AllowRecenter: 1
---- !u!114 &114896490822994626
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1568939913569990}
+  m_GameObject: {fileID: 1224674175519152}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc010e2bba50da74a944e3258e55a255, type: 3}
@@ -525,6 +449,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vrControllerPrefab: {fileID: 114727997788504806, guid: 6da3e7c4db3bc0c4e89159e496b200d3,
     type: 2}
+  _type: 2
+--- !u!114 &114872343326845682
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1842155193379840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc010e2bba50da74a944e3258e55a255, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _vrControllerPrefab: {fileID: 114727997788504806, guid: 6da3e7c4db3bc0c4e89159e496b200d3,
+    type: 2}
+  _type: 1
 --- !u!114 &114947983320856638
 MonoBehaviour:
   m_ObjectHideFlags: 1
