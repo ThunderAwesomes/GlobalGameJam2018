@@ -17,6 +17,8 @@ public class VRController : MonoBehaviour
 
 	private bool _isTriggerDown;
 	private bool _wasTriggerDown;
+	private bool _isAwaitingEscape;
+	private Vector3 _triggerPressedPosition;
 
 	private IDirectable _selected;
 	private IDirectable _hoverTarget;
@@ -25,6 +27,7 @@ public class VRController : MonoBehaviour
 
 	private Flightpath _activeFlightPath;
 	private Transform _anchor;
+	private Vector3 _previousPosition;
 
 	[SerializeField]
 	private Transform _tip;
@@ -59,7 +62,6 @@ public class VRController : MonoBehaviour
 
 	public void OnControllerConnected()
 	{
-
 	}
 
 	public void OnControllerDisconnected()
@@ -70,17 +72,8 @@ public class VRController : MonoBehaviour
 
 	private void Update()
 	{
-
-		Vector3 previousPosition = _tip.position;
-
-		transform.position = OVRInput.GetLocalControllerPosition(_controllerType);
-		transform.rotation = OVRInput.GetLocalControllerRotation(_controllerType);
-
-		transform.position += _anchor.position;
-		transform.rotation *= _anchor.rotation;
-
 		_isTriggerDown = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, _controllerType);
-
+	
 		if (_wasTriggerDown != _isTriggerDown)
 		{
 			if (_isTriggerDown)
@@ -96,8 +89,9 @@ public class VRController : MonoBehaviour
 
 		if (_isTriggerDown && _selected != null)
 		{
-			UpdateFlightPath(previousPosition, _tip.position);
+			UpdateFlightPath(_previousPosition, _tip.position);
 		}
+		_previousPosition = _tip.position;
 	}
 
 	private void UpdateFlightPath(Vector3 previous, Vector3 current)
@@ -132,12 +126,26 @@ public class VRController : MonoBehaviour
 			}
 			_hoverTarget = null;
 		}
+
+		// We keep track of the position we clicked and when we exit the collider we use the current 
+		// position. This is used to give us two good points.
+		if (_selected != null)
+		{
+			if (other.transform == _selected.transform && _isAwaitingEscape)
+			{
+				_isAwaitingEscape = false;
+				_activeFlightPath.AddPosition(_triggerPressedPosition);
+				_activeFlightPath.AddPosition(_tip.position);
+			}
+		}
 	}
 
 	private void OnTriggerPressed()
 	{
+		_triggerPressedPosition = _tip.position;
 		if (_hoverTarget != null)
 		{
+			_isAwaitingEscape = true;
 			_selected = _hoverTarget;
 			_activeFlightPath = new Flightpath(_tip.position);
 			_selected.flightpath = _activeFlightPath;
@@ -150,8 +158,10 @@ public class VRController : MonoBehaviour
 	{
 		if (_selected != null)
 		{
+			_isAwaitingEscape = false;
 			_selected.OnSelectionStateChanged(SelectionState.None);
 			_selected = null;
+			_activeFlightPath.finalized = true;
 			_activeFlightPath = null;
 
 			if (_hoverTarget != null)
