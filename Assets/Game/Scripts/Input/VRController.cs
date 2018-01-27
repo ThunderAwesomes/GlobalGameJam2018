@@ -6,7 +6,6 @@ using UnityEngine;
 public class VRController : MonoBehaviour
 {
     private OVRInput.Controller _controllerType;
-    private VRInputManager _inputManager;
 
     private bool _isTriggerDown;
     private bool _wasTriggerDown;
@@ -14,6 +13,7 @@ public class VRController : MonoBehaviour
 
     private IDirectable _target;
     private Flightpath _activeFlightPath;
+	private Transform _anchor;
 
     [SerializeField]
     private Transform _tip;
@@ -26,11 +26,12 @@ public class VRController : MonoBehaviour
         OnControllerDisconnected();
     }
 
-    public void AssignController(VRInputManager inputManager, OVRInput.Controller type)
+    public void AssignController(OVRInput.Controller type, Transform anchor)
     {
-        _inputManager = inputManager;
         _controllerType = type;
-    }
+		_anchor = anchor;
+
+	}
 
     public void OnControllerConnected()
     {
@@ -50,7 +51,9 @@ public class VRController : MonoBehaviour
     private void Update()
     {
         transform.position = OVRInput.GetLocalControllerPosition(_controllerType);
-        transform.rotation = OVRInput.GetLocalControllerRotation(_controllerType);
+		transform.position += _anchor.position;
+		transform.rotation = OVRInput.GetLocalControllerRotation(_controllerType);
+		transform.rotation *= _anchor.rotation;
 
         _isTriggerDown = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, _controllerType);
 
