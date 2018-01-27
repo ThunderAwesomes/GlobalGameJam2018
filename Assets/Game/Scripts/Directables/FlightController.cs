@@ -94,7 +94,6 @@ public class FlightController : MonoBehaviour, IDirectable
 	private void Start()
 	{
 		plane = GetComponent<Aeroplane>();
-		OnHover();
 	}
 
 	private void Update()
