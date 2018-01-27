@@ -36,9 +36,10 @@ public class FlightController : MonoBehaviour, IDirectable
 		{
 			if (_flightpath != value)
 			{
+				_flightpath = value;
 				_flightpathRenderer.SetFlightPath(_flightpath);
 			}
-			_flightpath = value;
+		
 			if (_flightpath != null)
 			{
 				_currentWaypoint = _flightpath.GetFirstWaypoint();
