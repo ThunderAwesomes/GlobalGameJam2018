@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: VRControllers
   m_EditorClassIdentifier: 
   _instances: []
-  _sphereCastRadius: 2.04
+  _sphereCastRadius: 0.05
   _waypointDelta: 0.17
   _isDebug: 1
