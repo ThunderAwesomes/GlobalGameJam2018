@@ -16,6 +16,7 @@ public class FlightController : MonoBehaviour, IDirectable
 	}
 
 	protected Flightpath _flightpath;
+	protected Vector3 _holdingPatternLocation;
 	protected FlightpathRenderer _flightpathRenderer;
 	protected LinkedListNode<Flightpath.Waypoint> _currentWaypoint;
 	protected Aeroplane _plane;
@@ -73,6 +74,12 @@ public class FlightController : MonoBehaviour, IDirectable
 	}
 	// End IDirectable Implementations
 
+	public void EnterHoldingPattern()
+	{
+		flightpath = null;
+		_holdingPatternLocation = transform.position;
+	}
+
 	protected WaypointInfo ComputeWaypointInfo(Flightpath.Waypoint waypoint)
 	{
 		WaypointInfo info;
@@ -128,7 +135,8 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	protected void AdjustForHoldingPattern()
 	{
-		_plane.throttle = 0.0f;
+		_plane.targetFacing = (_holdingPatternLocation - transform.position).normalized;
+		_plane.throttle = 0.5f;
 	}
 
 	private void Start()
@@ -140,35 +148,35 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	private void Update()
 	{
+		if (_drawDebugInfo)
+			DrawDebugInfo();
+
 		if (flightpath == null || _currentWaypoint == null)
+		{
+			AdjustForHoldingPattern();
 			return;
+		}
 
 		WaypointInfo info = ComputeWaypointInfo(_currentWaypoint.Value);
 
 		while (ShouldAdvanceWaypoint(info))
 		{
-			_currentWaypoint = _currentWaypoint.Next;
+			LinkedListNode<Flightpath.Waypoint> nextWaypoint = _currentWaypoint.Next;
 
-			if (_currentWaypoint == null)
+			if (nextWaypoint == null)
 			{
-				_flightpath = null;
-				break;
+				if (_flightpath.finalized)
+				{
+					EnterHoldingPattern();
+				}
+				return;
 			}
 
+			_currentWaypoint = nextWaypoint;
 			info = ComputeWaypointInfo(_currentWaypoint.Value);
 		}
 
-		if (_currentWaypoint != null)
-		{
-			AdjustForWaypoint(info);
-		}
-		else
-		{
-			AdjustForHoldingPattern();
-		}
-
-		if (_drawDebugInfo)
-			DrawDebugInfo();
+		AdjustForWaypoint(info);
 	}
 
 	private void DrawDebugInfo()

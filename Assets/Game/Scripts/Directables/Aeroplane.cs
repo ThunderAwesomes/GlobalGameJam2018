@@ -79,6 +79,7 @@ public class Aeroplane : MonoBehaviour
 		}
 
 		// Drag
-		_rb.AddRelativeForce(GetDrag(), ForceMode.Force);
+		Vector3 relativeDrag = GetDrag();
+		_rb.AddRelativeForce(relativeDrag, ForceMode.Force);
 	}
 }

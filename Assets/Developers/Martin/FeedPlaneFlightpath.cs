@@ -21,6 +21,9 @@ public class FeedPlaneFlightpath : MonoBehaviour
 
 		// Set flight controller's path.
 		flightController.flightpath = path;
+
+		path.finalized = true;
+		
 	}
 
 	private void Update()
