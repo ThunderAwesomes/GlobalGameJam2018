@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Aeroplane : MonoBehaviour
+public class Aeroplane : MonoBehaviour, IDirectable
 {
 	private float _yaw;
 	private float _pitch;
@@ -60,4 +61,19 @@ public class Aeroplane : MonoBehaviour
 		// Temp until we have some lift and hsit.
 		rb.useGravity = false;
 	}
+
+    public void OnSelected()
+    {
+        
+    }
+
+    public void SetFlightPath(Flightpath flightPath)
+    {
+        
+    }
+
+    public void OnDeselected()
+    {
+        
+    }
 }
