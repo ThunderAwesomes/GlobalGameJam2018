@@ -65,6 +65,15 @@ public class Aeroplane : MonoBehaviour
 		return -0.5f * airDensity * Vector3.Scale(localVelocitySquared, _axialDragCoefficients);
 	}
 
+	Vector3 CalculateSpringTorque(Vector3 currentVector, Vector3 targetVector, float springConstant)
+	{
+		Vector3 differenceVector = Vector3.Cross(currentVector, targetVector.normalized);
+		float torqueValue = Vector3.Angle(currentVector, targetVector) * springConstant;
+		Vector3 deltaAngularVelocity = differenceVector.normalized * torqueValue;
+		Quaternion transformQuaternion = transform.rotation * _rb.inertiaTensorRotation;
+		return transformQuaternion * Vector3.Scale(_rb.inertiaTensor, (Quaternion.Inverse(transformQuaternion) * deltaAngularVelocity));
+	}
+
 	protected void FixedUpdate()
 	{
 		// Engine force
@@ -75,8 +84,11 @@ public class Aeroplane : MonoBehaviour
 		// Manouvering
 		if (targetFacing != Vector3.zero)
 		{
-			Quaternion targetRotation = Quaternion.LookRotation(targetFacing, targetUp);
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * _manouverability); // Hacky but works for now.
+			_rb.AddTorque(CalculateSpringTorque(transform.forward, targetFacing, 0.4f));
+			_rb.AddTorque(CalculateSpringTorque(transform.up, targetUp, 0.4f));
+
+			//Quaternion targetRotation = Quaternion.LookRotation(targetFacing, targetUp);
+			//transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * _manouverability); // Hacky but works for now.
 		}
 
 		// Drag
