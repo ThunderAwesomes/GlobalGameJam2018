@@ -14,6 +14,7 @@ public class GameMode : MonoBehaviour
     private void Awake()
     {
         StartMode();
+        transform.position = Vector3.zero;
     }
 
     public void StartMode()
@@ -34,5 +35,6 @@ public class GameMode : MonoBehaviour
         _inputManager = Instantiate<VRInputManager>(_inputManagerPrefab);
         _inputManager.transform.SetParent(transform);
         _inputManager.name = _inputManagerPrefab.name;
+        _inputManager.transform.localPosition = Vector3.zero;
     }
 }
