@@ -6,12 +6,10 @@ using System;
 [Serializable, CreateAssetMenu(menuName = "Runtime Sets/Player Transform")]
 public class PlayerTransformRuntimeSet : RuntimeSet<PlayerTransform>
 {
+	[SerializeField,Range(1f, 200f)]
+	private float _startingScale = 10f;
 	[SerializeField]
-	private float _startingHeight;
-	[SerializeField]
-	private float _startingScale;
-	[SerializeField]
-	private Vector3 _startingPosition;
+	private Vector3 _startingPosition = Vector3.zero;
 
 	private float _height;
 	private float _scale;
@@ -44,7 +42,6 @@ public class PlayerTransformRuntimeSet : RuntimeSet<PlayerTransform>
 	protected override void OnEnable()
 	{
 		base.OnEnable();
-		_height = _startingHeight;
 		_scale = _startingScale;
 		_position = _startingPosition;
 	}

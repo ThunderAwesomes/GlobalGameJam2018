@@ -100,6 +100,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4468733447161642}
+  - component: {fileID: 114321634027689554}
   m_Layer: 0
   m_Name: Scale
   m_TagString: Untagged
@@ -222,7 +223,7 @@ Transform:
   m_GameObject: {fileID: 1693223420892300}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 8.63, y: 8.63, z: 8.63}
   m_Children:
   - {fileID: 4812787698136406}
   m_Father: {fileID: 4840056026188030}
@@ -423,6 +424,19 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1667227545252634}
   m_Enabled: 1
+--- !u!114 &114321634027689554
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1693223420892300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150cfa110a8693946939bda56dfbecbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _runtimeSet: {fileID: 11400000, guid: f8ba62efd4233ef49b04fd8d489cabf4, type: 2}
+  _trackerAnchor: {fileID: 4807470959465166}
 --- !u!114 &114625628400572932
 MonoBehaviour:
   m_ObjectHideFlags: 1
