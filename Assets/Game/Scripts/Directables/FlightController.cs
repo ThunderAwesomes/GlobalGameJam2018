@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Aeroplane))]
+[RequireComponent(typeof(Aeroplane), typeof(FlightpathRenderer))]
 public class FlightController : MonoBehaviour, IDirectable
 {
 	// Helper struct to provide some useful precomputed info about the waypoint in relation to ourselves in this instant.
@@ -12,18 +12,18 @@ public class FlightController : MonoBehaviour, IDirectable
 		public Vector3 worldDirection;
 		public Vector3 localDirection;
 		public Vector3 worldPosition;
-		
+
 	}
 
 	protected Flightpath _flightpath;
+	protected FlightpathRenderer _flightpathRenderer;
 	protected LinkedListNode<Flightpath.Waypoint> _currentWaypoint;
-
-	private Aeroplane plane;
+	private Aeroplane _plane;
 
 	const bool _drawDebugInfo = true;
 
 	// Flight control tweakables
-	private float lookAheadDistance = 40.0f;
+	private float _lookAheadDistance = 40.0f;
 
 	// IDirectable Implementation
 	public virtual Flightpath flightpath
@@ -34,6 +34,10 @@ public class FlightController : MonoBehaviour, IDirectable
 		}
 		set
 		{
+			if (_flightpath != value)
+			{
+				_flightpathRenderer.SetFlightPath(_flightpath);
+			}
 			_flightpath = value;
 			if (_flightpath != null)
 			{
@@ -83,7 +87,7 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	protected bool ShouldAdvanceWaypoint(WaypointInfo info)
 	{
-		return IsWaypointInfront(info) && (info.distance < lookAheadDistance);
+		return IsWaypointInfront(info) && (info.distance < _lookAheadDistance);
 	}
 
 	protected void AdjustForWaypoint(WaypointInfo info)
@@ -106,20 +110,21 @@ public class FlightController : MonoBehaviour, IDirectable
 
 
 
-		plane.yaw = Steering;
+		_plane.yaw = Steering;
 
 		// TODO: Adjust plane controls to fly towards waypoint
-		plane.throttle = 1.0f;
+		_plane.throttle = 1.0f;
 	}
 
 	protected void AdjustForHoldingPattern()
 	{
-		plane.throttle = 0.0f;
+		_plane.throttle = 0.0f;
 	}
 
 	private void Start()
 	{
-		plane = GetComponent<Aeroplane>();
+		_plane = GetComponent<Aeroplane>();
+		_flightpathRenderer = GetComponent<FlightpathRenderer>();
 	}
 
 	private void Update()
@@ -129,7 +134,7 @@ public class FlightController : MonoBehaviour, IDirectable
 
 		WaypointInfo info = ComputeWaypointInfo(_currentWaypoint.Value);
 
-		while(ShouldAdvanceWaypoint(info))
+		while (ShouldAdvanceWaypoint(info))
 		{
 			_currentWaypoint = _currentWaypoint.Next;
 
@@ -141,7 +146,7 @@ public class FlightController : MonoBehaviour, IDirectable
 
 			info = ComputeWaypointInfo(_currentWaypoint.Value);
 		}
-		
+
 		if (_currentWaypoint != null)
 		{
 			AdjustForWaypoint(info);
