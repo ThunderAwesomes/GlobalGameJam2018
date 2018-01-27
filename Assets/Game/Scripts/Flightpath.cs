@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class Flightpath
+public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 {
 	const int smoothing = 5;
 
@@ -14,6 +15,12 @@ public sealed class Flightpath
 		{
 			Position = position;
 		}
+	}
+
+
+	public int waypointCount
+	{
+		get { return _waypoints.Count; }
 	}
 
 	private List<Vector3> _sourcePoints = new List<Vector3>();
@@ -69,5 +76,21 @@ public sealed class Flightpath
 			current = next;
 			next = current.Next;
 		}
+	}
+
+	public IEnumerator<Waypoint> GetEnumerator()
+	{
+		LinkedListNode<Waypoint> current = _waypoints.First;
+
+		while (current != null)
+		{
+			yield return current.Value;
+			current = current.Next;
+		}
+	}
+
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		yield return GetEnumerator();
 	}
 }
