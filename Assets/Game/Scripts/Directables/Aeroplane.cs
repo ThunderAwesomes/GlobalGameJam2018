@@ -6,8 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Aeroplane : MonoBehaviour
 {
-	private Vector3 _targetFacing;
-	private Vector3 _targetUp;
+	private Vector3 _targetFacing = Vector3.zero;
+	private Vector3 _targetUp = Vector3.up;
 	private float _throttle;
 
 	public Vector3 targetFacing
@@ -43,6 +43,7 @@ public class Aeroplane : MonoBehaviour
 
 	private Rigidbody _rb;
 
+
 	protected void Start()
 	{
 		_rb = GetComponent<Rigidbody>();
@@ -71,8 +72,11 @@ public class Aeroplane : MonoBehaviour
 		_rb.AddForce(force, ForceMode.Force);
 
 		// Manouvering
-		Quaternion targetRotation = Quaternion.LookRotation(targetFacing, targetUp);
-		transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * _manouverability); // Hacky but works for now.
+		if (targetFacing != Vector3.zero)
+		{
+			Quaternion targetRotation = Quaternion.LookRotation(targetFacing, targetUp);
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * _manouverability); // Hacky but works for now.
+		}
 
 		// Drag
 		_rb.AddRelativeForce(GetDrag(), ForceMode.Force);
