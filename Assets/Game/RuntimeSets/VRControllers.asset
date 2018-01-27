@@ -8,7 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c45570fe1af3b54a8527c069d7659fa, type: 3}
-  m_Name: New Flight Path Renderer Runtime Set
+  m_Script: {fileID: 11500000, guid: a1b561eb722ab6b4f85509e7fa341d55, type: 3}
+  m_Name: VRControllers
   m_EditorClassIdentifier: 
   _instances: []
+  _sphereCastRadius: 2.04
+  _waypointDelta: 0.17
+  _isDebug: 1

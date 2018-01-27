@@ -8,6 +8,8 @@ public class VRControllerRuntimeSet : RuntimeSet<VRController>
 	private float _sphereCastRadius;
 	[SerializeField]
 	private float _waypointDelta;
+	[SerializeField]
+	private bool _isDebug;
 
 	/// <summary>
 	/// How big the physics sphere cast will be when using the 
@@ -25,6 +27,13 @@ public class VRControllerRuntimeSet : RuntimeSet<VRController>
 	{
 		get { return _waypointDelta; }
 	}
-	
 
+	/// <summary>
+	/// If true we will draw debug lines on the controller 
+	/// </summary>
+	public bool isDebug
+	{
+		get { return _isDebug; }
+		set { _isDebug = value; }
+	}
 }

@@ -67,7 +67,7 @@ public abstract class RuntimeSet<T> : BaseRuntimeSet
 		{
 			case PlayModeStateChange.EnteredEditMode:
 			case PlayModeStateChange.ExitingPlayMode:
-				_instances.Clear();
+				Reset();
 				break;
 		}
 	}
@@ -96,5 +96,22 @@ public abstract class RuntimeSet<T> : BaseRuntimeSet
 	public bool Remove(T instance)
 	{
 		return _instances.Remove(instance);
+	}
+
+	/// <summary>
+	/// Invoked when entering play mode and we should load some values. 
+	/// </summary>
+	protected virtual void Initialize()
+	{
+
+	}
+
+	/// <summary>
+	/// Invoked when we should reset our data set when exiting or entering
+	/// playmode
+	/// </summary>
+	protected virtual void Reset()
+	{
+		_instances.Clear();
 	}
 }

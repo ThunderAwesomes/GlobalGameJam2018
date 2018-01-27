@@ -60,7 +60,15 @@ public class VRController : MonoBehaviour
         _activeFlightPath = null;
     }
 
-    private void Update()
+	private void OnDrawGizmos()
+	{
+		if (_runtimeSet.isDebug)
+		{
+			Gizmos.DrawWireSphere(_tip.position, _runtimeSet.sphereCastRadius);
+		}
+	}
+
+	private void Update()
     {
 
 		Vector3 previousPosition = transform.position;
@@ -118,7 +126,7 @@ public class VRController : MonoBehaviour
         RaycastHit raycastHit;
         Ray ray = new Ray(_tip.position, _tip.forward);
 
-        if (Physics.SphereCast(ray, _runtimeSet.sphereCastRadius, out raycastHit, 5, Layers.Directable)) 
+        if (Physics.SphereCast(ray, 0f, out raycastHit, _runtimeSet.sphereCastRadius, Layers.Directable)) 
         {
             _target = raycastHit.transform.GetComponent<IDirectable>();
 			_activeFlightPath = new Flightpath(_tip.position);
