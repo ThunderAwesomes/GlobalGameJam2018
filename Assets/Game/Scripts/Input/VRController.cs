@@ -63,7 +63,7 @@ public class VRController : MonoBehaviour
     private void OnTriggerPressed()
     {
         RaycastHit raycastHit; 
-        if(Physics.SphereCast(_tip.position, _castRedious, _tip.forward, out raycastHit, _castRedious))
+        if(Physics.SphereCast(_tip.position, _castRedious, _tip.forward, out raycastHit, _castRedious, Layers.Directable))
         {
             _target = raycastHit.transform.GetComponent<IDirectable>();
             _target.OnSelected();
