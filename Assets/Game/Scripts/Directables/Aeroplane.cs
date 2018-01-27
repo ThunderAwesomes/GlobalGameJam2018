@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Aeroplane : MonoBehaviour
 {
 	private float _yaw;
@@ -45,12 +46,16 @@ public class Aeroplane : MonoBehaviour
 	protected void Start()
 	{
 		rb = GetComponent<Rigidbody>();
+		rb.mass = mass;
+		rb.drag = drag;
+		rb.WakeUp();
 	}
 
 	protected void FixedUpdate()
 	{
 		// Engine force
-		rb.AddForce(transform.forward * (thrustPower * throttle), ForceMode.Force);
+		Vector3 force = transform.forward * (thrustPower * throttle);
+		rb.AddForce(force, ForceMode.Force);
 
 		// Temp until we have some lift and hsit.
 		rb.useGravity = false;
