@@ -10,14 +10,20 @@ public class VRController : MonoBehaviour
 
     private bool _isTriggerDown;
     private bool _wasTriggerDown;
+    private bool _hasTarget;
 
     private IDirectable _target;
+    private Flightpath _activeFlightPath;
 
     [SerializeField]
     private Transform _tip;
     [SerializeField]
-    private float _castRedious = 0.02f;
+    private float _castRadius = 0.02f;
 
+    private void OnDestroy()
+    {
+        OnControllerDisconnected();
+    }
 
     public void AssignController(VRInputManager inputManager, OVRInput.Controller type)
     {
@@ -37,6 +43,7 @@ public class VRController : MonoBehaviour
             _target.OnDeselected();
             _target = null;
         }
+        _activeFlightPath = null;
     }
 
     private void Update()
@@ -58,15 +65,29 @@ public class VRController : MonoBehaviour
             }
         }
         _wasTriggerDown = _isTriggerDown;
+
+        if(_hasTarget)
+        {
+            UpdateTarget();
+        }
     }
+
+
 
     private void OnTriggerPressed()
     {
-        RaycastHit raycastHit; 
-        if(Physics.SphereCast(_tip.position, _castRedious, _tip.forward, out raycastHit, _castRedious, Layers.Directable))
+        RaycastHit raycastHit;
+        Ray ray = new Ray(_tip.position, _tip.forward);
+
+        if (Physics.SphereCast(ray, _castRadius,out raycastHit, 5, Layers.Directable)) 
         {
             _target = raycastHit.transform.GetComponent<IDirectable>();
             _target.OnSelected();
+            _hasTarget = true;
+        }
+        else
+        {
+            _hasTarget = false;
         }
     }
 
@@ -76,6 +97,7 @@ public class VRController : MonoBehaviour
         {
             _target.OnDeselected();
             _target = null;
+            _hasTarget = false;
         }
     }
 
