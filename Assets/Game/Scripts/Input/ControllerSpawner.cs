@@ -19,16 +19,15 @@ public class ControllerSpawner : MonoBehaviour
         CreateControllers();
     }
 
-
     private void CreateControllers()
     {
         Assert.IsNull(_trackedController, "Controller expected to be null");
 		string name = _vrControllerPrefab.name + " [" + _type.ToString() + "]";
-		VRController controller = Instantiate<VRController>(_vrControllerPrefab);
-		controller.name = name;
-		controller.transform.SetParent(transform);
-		controller.transform.localPosition = Vector3.zero;
-		controller.transform.localScale = Vector3.one;
-		controller.AssignController(_type, transform);
+		_trackedController = Instantiate<VRController>(_vrControllerPrefab);
+		_trackedController.name = name;
+		_trackedController.transform.SetParent(transform);
+		_trackedController.transform.localPosition = Vector3.zero;
+		_trackedController.transform.localScale = Vector3.one;
+		_trackedController.AssignController(_type, transform);
 	}
 }
