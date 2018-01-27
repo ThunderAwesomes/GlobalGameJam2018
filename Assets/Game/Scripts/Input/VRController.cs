@@ -17,10 +17,8 @@ public class VRController : MonoBehaviour
 
     [SerializeField]
     private Transform _tip;
-    [SerializeField]
-    private float _castRadius = 0.02f;
 	[SerializeField]
-	private float _waypointDelta = 0.02f;
+	private VRControllerRuntimeSet _runtimeSet;
 
 	private float _nextWaypoint = 0f;
 
@@ -30,7 +28,17 @@ public class VRController : MonoBehaviour
         OnControllerDisconnected();
     }
 
-    public void AssignController(OVRInput.Controller type, Transform anchor)
+	private void OnEnable()
+	{
+		_runtimeSet.Add(this);
+	}
+
+	private void OnDisable()
+	{
+		_runtimeSet.Remove(this);
+	}
+
+	public void AssignController(OVRInput.Controller type, Transform anchor)
     {
         _controllerType = type;
 		_anchor = anchor;
@@ -100,7 +108,7 @@ public class VRController : MonoBehaviour
 
 		if(_nextWaypoint <= 0)
 		{
-			_nextWaypoint = _waypointDelta;
+			_nextWaypoint = _runtimeSet.waypointDelta;
 			_activeFlightPath.AddPosition(current);
 		}
 	}
@@ -110,7 +118,7 @@ public class VRController : MonoBehaviour
         RaycastHit raycastHit;
         Ray ray = new Ray(_tip.position, _tip.forward);
 
-        if (Physics.SphereCast(ray, _castRadius,out raycastHit, 5, Layers.Directable)) 
+        if (Physics.SphereCast(ray, _runtimeSet.sphereCastRadius, out raycastHit, 5, Layers.Directable)) 
         {
             _target = raycastHit.transform.GetComponent<IDirectable>();
 			_activeFlightPath = new Flightpath(_tip.position);
