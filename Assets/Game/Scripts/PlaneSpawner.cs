@@ -97,8 +97,6 @@ public class PlaneSpawner : MonoBehaviour
 		angle = ((Mathf.PI * 2) * Random.value);
 		Vector3 holdingPosition = _playerTransform.position;
 		float hpRadius = Random.value * _holdingPositionRadius * _playerTransform.scale;
-		sin = Mathf.Sin(angle);
-		cos = Mathf.Cos(angle);
 		holdingPosition.x += sin * hpRadius;
 		holdingPosition.z += cos * hpRadius;
 

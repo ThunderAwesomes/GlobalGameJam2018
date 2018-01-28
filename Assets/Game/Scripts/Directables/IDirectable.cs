@@ -6,7 +6,7 @@ using UnityEngine;
 
 public interface IDirectable 
 {
-
+	bool IsNull { get; }
 	GameObject gameObject { get; }
 	Transform transform { get; }
 	Flightpath flightpath { get; }

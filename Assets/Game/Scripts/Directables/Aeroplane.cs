@@ -40,6 +40,8 @@ public class Aeroplane : MonoBehaviour
 	protected float _manouverability = 5000.0f;
 	[SerializeField]
 	protected Vector3 _axialManouverabilityMultiplier = Vector3.one;
+	[SerializeField]
+	private GameObject _explosionEffect;
 
 	private Rigidbody _rb;
 
@@ -72,6 +74,17 @@ public class Aeroplane : MonoBehaviour
 		Vector3 deltaAngularVelocity = differenceVector.normalized * torqueValue;
 		Quaternion transformQuaternion = transform.rotation * _rb.inertiaTensorRotation;
 		return transformQuaternion * Vector3.Scale(_rb.inertiaTensor, (Quaternion.Inverse(transformQuaternion) * deltaAngularVelocity));
+	}
+
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (_explosionEffect != null)
+		{
+			GameObject explosion = Instantiate(_explosionEffect);
+			explosion.transform.position = transform.position;
+			Destroy(explosion, 1.0f);
+		}
+		Destroy(gameObject);
 	}
 
 	protected void FixedUpdate()
