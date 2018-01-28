@@ -30,6 +30,10 @@ ModelImporter:
     100044: Wheel
     100046: Wheels
     100048: Head_Cockpit
+    100050: Glass_L
+    100052: Glass_R
+    100054: Main_Body
+    100056: Wheel3
     400000: Body
     400002: Body_01
     400004: FrontWing_L
@@ -55,6 +59,10 @@ ModelImporter:
     400044: Wheel
     400046: Wheels
     400048: Head_Cockpit
+    400050: Glass_L
+    400052: Glass_R
+    400054: Main_Body
+    400056: Wheel3
     2100000: lambert1
     2100002: Default_Material
     2300000: Body_01
@@ -74,6 +82,10 @@ ModelImporter:
     2300028: Tail_01
     2300030: Wheel
     2300032: Head_Cockpit
+    2300034: Glass_L
+    2300036: Glass_R
+    2300038: Main_Body
+    2300040: Wheel3
     3300000: Body_01
     3300002: FrontWing_L
     3300004: FrontWing_R
@@ -91,6 +103,10 @@ ModelImporter:
     3300028: Tail_01
     3300030: Wheel
     3300032: Head_Cockpit
+    3300034: Glass_L
+    3300036: Glass_R
+    3300038: Main_Body
+    3300040: Wheel3
     4300000: RearWing_M
     4300002: RearWing_L
     4300004: RearWing_R
@@ -108,6 +124,10 @@ ModelImporter:
     4300028: Body_01
     4300030: Tail_01
     4300032: Head_Cockpit
+    4300034: Wheel3
+    4300036: Main_Body
+    4300038: Glass_R
+    4300040: Glass_L
     6400000: Body_01
     6400002: FrontWing_L
     6400004: FrontWing_R
@@ -124,6 +144,10 @@ ModelImporter:
     6400026: RearWing_R
     6400028: Tail_01
     6400030: Wheel
+    6400032: Glass_L
+    6400034: Glass_R
+    6400036: Main_Body
+    6400038: Wheel3
     7400000: Take 001
     9500000: //RootNode
   externalObjects: {}
