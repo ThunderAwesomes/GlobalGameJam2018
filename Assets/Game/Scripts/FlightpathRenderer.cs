@@ -44,7 +44,7 @@ public class FlightpathRenderer : MonoBehaviour
 		Flightpath flightPath = _flightController.flightpath;
 		LinkedListNode<Flightpath.Waypoint> currentWaypoint = _flightController.currentWaypoint;
 
-		if (!flightPath.isUserGenerated || flightPath == null || currentWaypoint == null)
+		if (flightPath == null || currentWaypoint == null || !flightPath.isUserGenerated)
 		{
 			_flightpathLineRenderer.positionCount = 0;
 			_flightpathConnectionLineRenderer.positionCount = 0;
