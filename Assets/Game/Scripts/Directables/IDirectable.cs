@@ -4,14 +4,9 @@ using UnityEngine;
 
 
 
-public interface IDirectable 
+public interface IDirectable : IPathable
 {
-	bool IsNull { get; }
-	GameObject gameObject { get; }
-	Transform transform { get; }
 	Flightpath flightpath { get; }
-	void SetFlightpath(Flightpath flightpath);
-
-	void OnSelectionStateChanged(VRController.SelectionState state);
-	void OnLandingAttempted(bool wasSuccessful, LandingZone landingZone);
+	T GetComponent<T>();
+	void AssignPath(Flightpath flightpath);
 }

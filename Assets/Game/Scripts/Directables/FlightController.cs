@@ -57,15 +57,7 @@ public class FlightController : MonoBehaviour, IDirectable
 		get { return this == null; }
 	}
 
-	public void SetFlightpath(Flightpath flightpath)
-	{
-		if (_flightpath != flightpath)
-		{
-			_flightpath = flightpath;
-			_navState = NavigationState.followingFlightPath;
-		}
-		_currentWaypoint = _flightpath.GetFirstWaypoint();
-	}
+
 
 	public void SetHoldingPattern(Vector3 location)
 	{
@@ -75,29 +67,9 @@ public class FlightController : MonoBehaviour, IDirectable
 		_holdingPatternLocation = transform.position;
 	}
 
-	public void OnSelectionStateChanged(VRController.SelectionState state)
+	public void OnSelectionStateChanged(SelectionState state)
 	{
-		switch (state)
-		{
-			case VRController.SelectionState.Hover:
-				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.material.color = Color.cyan;
-				}
-				break;
-			case VRController.SelectionState.Select:
-				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.material.color = Color.blue;
-				}
-				break;
-			case VRController.SelectionState.None:
-				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.material.color = Color.white;
-				}
-				break;
-		}
+		Tint.ByState(state, gameObject);
 	}
 	// End IDirectable Implementations
 
@@ -118,7 +90,7 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	protected bool IsWaypointInfront(WaypointInfo info)
 	{
-		return Vector3.Dot(info.worldDirection, transform.forward) > 0.2;
+		return Vector3.Dot(info.worldDirection, transform.forward) > -0.2;
 	}
 
 	protected bool ShouldAdvanceWaypoint(WaypointInfo info)
@@ -142,8 +114,8 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	protected void AdjustForHoldingPattern()
 	{
-		_plane.targetFacing = (_holdingPatternLocation - transform.position).normalized;
-		_plane.targetUp = GetBankedUpVector(_plane.targetFacing, 5.0f, 0.5f);
+		_plane.targetFacing = Vector3.Slerp(transform.forward, (_holdingPatternLocation - transform.position).normalized, 0.2f);
+		_plane.targetUp = GetBankedUpVector(_plane.targetFacing, 3.0f, 0.2f);
 		_plane.throttle = 0.5f;
 	}
 
@@ -176,9 +148,9 @@ public class FlightController : MonoBehaviour, IDirectable
 
 				if (nextWaypoint == null)
 				{
-					if (_flightpath.finalized)
+					if (_flightpath.isFinalized)
 					{
-						flightpath.consumed = true;
+						flightpath.OnPathExited(this);
 						SetHoldingPattern(transform.position);
 					}
 					return;
@@ -241,5 +213,30 @@ public class FlightController : MonoBehaviour, IDirectable
 		{
 			meshRenderer.material.color = Color.white;
 		}
+	}
+
+	public void StartPath(Vector3 position)
+	{
+		if(_flightpath != null)
+		{
+			_flightpath = new Flightpath(position);
+			_navState = NavigationState.followingFlightPath;
+		}
+		_currentWaypoint = _flightpath.GetFirstWaypoint();
+	}
+
+	public void AddPathPosition(Vector3 position)
+	{
+		_flightpath.AddPosition(position);
+	}
+
+	public void EndPath()
+	{
+		_flightpath.Finialized();
+	}
+
+	public void AssignPath(Flightpath flightpath)
+	{
+		_flightpath = flightpath;
 	}
 }
