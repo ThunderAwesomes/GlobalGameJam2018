@@ -108,6 +108,6 @@ public class PlaneSpawner : MonoBehaviour
         flightPath.drawPath = false;
         flightPath.AddPosition(holdingPosition);
 		flightPath.Finialized();
-		iDirectable.AssignPath(flightPath);
+		iDirectable.AssignPath(flightPath, true);
 	}
 }

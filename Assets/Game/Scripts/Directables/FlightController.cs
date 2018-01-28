@@ -29,11 +29,17 @@ public class FlightController : MonoBehaviour, IDirectable
 	protected LinkedListNode<Flightpath.Waypoint> _currentWaypoint;
 	protected Aeroplane _plane;
 	protected Rigidbody _rb;
+	protected bool _isInteractable; 
 
 	const bool _drawDebugInfo = false;
 
-	// Flight control tweakables
-	private float _lookAheadDistance = 30.0f;
+
+	public bool isInteractable
+	{
+		get { return _isInteractable; }
+		set { _isInteractable = value; }
+	}
+
 
 	// IDirectable Implementation
 	public virtual Flightpath flightpath
@@ -95,7 +101,7 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	protected bool ShouldAdvanceWaypoint(WaypointInfo info)
 	{
-		return IsWaypointInfront(info) && (info.distance < _lookAheadDistance);
+		return IsWaypointInfront(info) && (info.distance < _flightpath.lookAheadDistance );
 	}
 
 	protected Vector3 GetBankedUpVector(Vector3 targetVector, float sensitivity, float maxBank)
@@ -217,13 +223,14 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	public void StartPath(Vector3 position)
 	{
-		if(_flightpath != null)
+		if(_flightpath == null)
 		{
 			_flightpath = new Flightpath(position);
 			_navState = NavigationState.followingFlightPath;
 		}
 		_currentWaypoint = _flightpath.GetFirstWaypoint();
 	}
+
 
 	public void AddPathPosition(Vector3 position)
 	{
@@ -235,8 +242,13 @@ public class FlightController : MonoBehaviour, IDirectable
 		_flightpath.Finialized();
 	}
 
-	public void AssignPath(Flightpath flightpath)
+	public void AssignPath(Flightpath flightpath, bool startFollowing)
 	{
 		_flightpath = flightpath;
+		if(startFollowing)
+		{
+			_navState = NavigationState.followingFlightPath;
+			_currentWaypoint = _flightpath.GetFirstWaypoint();
+		}
 	}
 }
