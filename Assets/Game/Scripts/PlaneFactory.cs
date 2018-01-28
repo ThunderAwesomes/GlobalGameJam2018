@@ -32,6 +32,8 @@ public class PlaneFactory : ScriptableObject
 		result.transform.position = position;
 		result.transform.rotation = rotation;
 
+		Debug.Log(result);
+
 		return result;
 	}
 
@@ -42,20 +44,21 @@ public class PlaneFactory : ScriptableObject
 		meshObject.transform.SetParent(result.transform);
 		meshObject.transform.localPosition = Vector3.zero;
 
-		// Get plane stats from mesh name
-		MeshFilter meshFilter = meshObject.GetComponent<MeshFilter>();
-		string statString = meshFilter.sharedMesh.name;
 
-		foreach(var pair in statString.Split(','))
+		foreach (Transform tf in meshObject.GetComponentsInChildren<Transform>())
 		{
-			var splitPait = pair.Split(':');
-			
-			/*
-			switch(splitPait[0])
+			if (tf.gameObject.name == "Propeller")
 			{
-				//case:
+				Debug.Log("This is a propeller");
+				Rotator r = tf.gameObject.AddComponent<Rotator>();
+				r.axis = Vector3.forward;
+				r.speed = 1000;
 			}
-			*/
+		}
+
+		foreach (MeshCollider mc in meshObject.GetComponentsInChildren<MeshCollider>())
+		{
+			mc.convex = true;
 		}
 
 		return result;

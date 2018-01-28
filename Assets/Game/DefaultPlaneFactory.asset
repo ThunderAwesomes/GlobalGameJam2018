@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c9c1485919ee0d4eac4babe9ebf55e2, type: 3}
+  m_Name: DefaultPlaneFactory
+  m_EditorClassIdentifier: 
+  seed: 1900725526
+  planeParent: {fileID: 1078923915717910, guid: 8605d1aa035c9df4fa0108be0b8074b4,
+    type: 2}
+  planeMeshes:
+  - {fileID: 100024, guid: 0ec988a11d9294c33a435ba337d06c16, type: 3}
