@@ -124,7 +124,8 @@ public class LandingZone : MonoBehaviour
 		{
 			if(state.isValid)
 			{
-				_tailsHooks[0].LandDirectable(directable);
+				int index = UnityEngine.Random.Range(0, _tailsHooks.Length);
+				_tailsHooks[index].LandDirectable(directable);
 			}
 
 			//directable.OnLandingAttempted(state.isValid && !state.hitWall, this);

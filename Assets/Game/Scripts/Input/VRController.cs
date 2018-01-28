@@ -104,7 +104,7 @@ public class VRController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		_hoverTarget = other.GetComponentInParent<ISelectable>();
-		if (_hoverTarget.isInteractable)
+		if (!_hoverTarget.IsNull() && _hoverTarget.isInteractable)
 		{
 			if (!_hoverTarget.IsNull() && !_isTriggerDown)
 			{
@@ -116,7 +116,7 @@ public class VRController : MonoBehaviour
 	private void OnTriggerExit(Collider other)
 	{
 		ISelectable otherSelection = other.GetComponent<ISelectable>();
-		if (otherSelection.isInteractable)
+		if (!otherSelection.IsNull() && otherSelection.isInteractable)
 		{
 			if (!_hoverTarget.IsNull())
 			{
