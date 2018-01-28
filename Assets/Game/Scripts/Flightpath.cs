@@ -45,14 +45,14 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	private bool _isFinalized;
 	private bool _disposeOnComplete;
 	private int _occupancy;
-	private event DirectableDelegate _onPathStarted; 
-	private event DirectableDelegate _onPathExited; 
-	private event FlightPathDelegate _onPathFinalized; 
+	private event DirectableDelegate _onPathStarted;
+	private event DirectableDelegate _onPathExited;
+	private event FlightPathDelegate _onPathFinalized;
 
 	public bool drawPath
 	{
 		get { return _drawPath; }
-		set { _drawPath = value;}
+		set { _drawPath = value; }
 	}
 
 	public int occupancy
@@ -60,13 +60,13 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 		get { return _occupancy; }
 	}
 
-	public bool isFinalized 
+	public bool isFinalized
 	{
 		get { return _isFinalized; }
 	}
-	public int count 
+	public int count
 	{
-		get{ return _sourcePoints.Count; }
+		get { return _sourcePoints.Count; }
 	}
 
 	public bool disposeOnComplete
@@ -77,7 +77,7 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 
 	public Vector3 this[int index]
 	{
-		get 
+		get
 		{
 			return _sourcePoints[index];
 		}
@@ -86,19 +86,19 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	public event DirectableDelegate onPathStarted
 	{
 		add { _onPathStarted += value; }
-		remove { _onPathStarted -= value;}
+		remove { _onPathStarted -= value; }
 	}
 
 	public event DirectableDelegate onPathExited
 	{
 		add { _onPathExited += value; }
-		remove { _onPathExited -= value;}
+		remove { _onPathExited -= value; }
 	}
 
 	public event FlightPathDelegate onPathFinalized
 	{
 		add { _onPathFinalized += value; }
-		remove { _onPathFinalized -= value;}
+		remove { _onPathFinalized -= value; }
 	}
 
 	private Flightpath()
@@ -111,8 +111,14 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 
 	public Flightpath(Vector3 startPosition) : this()
 	{
-		Waypoint firstWaypoint = new Waypoint(startPosition);
-		_waypoints.AddFirst(firstWaypoint);
+		AddPosition(startPosition);
+	}
+
+	public void Reset()
+	{
+		_isFinalized = false;
+		_waypoints.Clear();
+		_sourcePoints.Clear();
 	}
 
 	/// <summary>
@@ -122,7 +128,7 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	public void OnPathStarted(IDirectable iDirectable)
 	{
 		_occupancy++;
-		if(_onPathStarted != null)
+		if (_onPathStarted != null)
 		{
 			_onPathStarted(this, iDirectable);
 		}
@@ -136,12 +142,12 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	public void OnPathExited(IDirectable iDirectable)
 	{
 		_occupancy--;
-		if(_onPathExited != null)
+		if (_onPathExited != null)
 		{
-			_onPathExited (this, iDirectable);
+			_onPathExited(this, iDirectable);
 		}
 
-		if(_occupancy <= 0)
+		if (_occupancy <= 0)
 		{
 			// Destroy 
 		}
@@ -153,7 +159,7 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	public void Finialized()
 	{
 		_isFinalized = true;
-		if(_onPathFinalized != null)
+		if (_onPathFinalized != null)
 		{
 			_onPathFinalized(this);
 		}
@@ -164,20 +170,28 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	/// </summary>
 	public void AddPosition(Vector3 position)
 	{
-		if(_isFinalized)
+		if (_isFinalized)
 		{
-			throw new System.InvalidOperationException("You can't add points to a finalized path");
+			throw new InvalidOperationException("You can't add points to a finalized path");
 		}
-		_sourcePoints.Add(position);
+		if (_waypoints.Count == 0)
+		{
+			Waypoint firstWaypoint = new Waypoint(position);
+			_waypoints.AddFirst(firstWaypoint);
+		}
+		else
+		{
+			_sourcePoints.Add(position);
 
-		int iterations = smoothing < _sourcePoints.Count ? smoothing : _sourcePoints.Count;
-		Vector3[] points = new Vector3[iterations];
-		for (int i = 0; i < points.Length; i++)
-		{
-			points[i] = _sourcePoints[_sourcePoints.Count - 1 - i];
+			int iterations = smoothing < _sourcePoints.Count ? smoothing : _sourcePoints.Count;
+			Vector3[] points = new Vector3[iterations];
+			for (int i = 0; i < points.Length; i++)
+			{
+				points[i] = _sourcePoints[_sourcePoints.Count - 1 - i];
+			}
+			Waypoint waypoint = new Waypoint(points);
+			_waypoints.AddLast(waypoint);
 		}
-		Waypoint waypoint = new Waypoint(points);
-		_waypoints.AddLast(waypoint);
 	}
 
 

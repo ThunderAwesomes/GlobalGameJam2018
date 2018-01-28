@@ -37,8 +37,8 @@ public class PlaneFactory : ScriptableObject
 
 	public GameObject CreatePlane(GameObject mesh)
 	{
-		GameObject result = GameObject.Instantiate(planeParent);
-		GameObject meshObject = GameObject.Instantiate(mesh);
+		GameObject result = Instantiate(planeParent);
+		GameObject meshObject = Instantiate(mesh);
 		meshObject.transform.SetParent(result.transform);
 		meshObject.transform.localPosition = Vector3.zero;
 
@@ -50,10 +50,12 @@ public class PlaneFactory : ScriptableObject
 		{
 			var splitPait = pair.Split(':');
 			
+			/*
 			switch(splitPait[0])
 			{
 				//case:
 			}
+			*/
 		}
 
 		return result;

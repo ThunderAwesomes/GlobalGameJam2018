@@ -5,13 +5,6 @@ using UnityEngine;
 
 public class VRController : MonoBehaviour
 {
-	public enum SelectionState
-	{
-		None,
-		Hover,
-		Select,
-	}
-
 	private OVRInput.Controller _controllerType;
 
 	private bool _isTriggerDown;
@@ -19,12 +12,11 @@ public class VRController : MonoBehaviour
 	private bool _isAwaitingEscape;
 	private Vector3 _triggerPressedPosition;
 
-	private IDirectable _selected;
-	private IDirectable _hoverTarget;
 
+	private bool _hasPathableSelected;
+	private ISelectable _selected;
+	private ISelectable _hoverTarget;
 
-
-	private Flightpath _activeFlightPath;
 	private Transform _anchor;
 	private Vector3 _previousPosition;
 
@@ -66,7 +58,6 @@ public class VRController : MonoBehaviour
 	public void OnControllerDisconnected()
 	{
 		_selected = null;
-		_activeFlightPath = null;
 	}
 
 	private void Update()
@@ -86,7 +77,7 @@ public class VRController : MonoBehaviour
 		}
 		_wasTriggerDown = _isTriggerDown;
 
-		if (_isTriggerDown && _selected != null && !_selected.IsNull)
+		if (_isTriggerDown && _hasPathableSelected)
 		{
 			UpdateFlightPath(_previousPosition, _tip.position);
 		}
@@ -102,22 +93,27 @@ public class VRController : MonoBehaviour
 		if (_nextWaypoint <= 0)
 		{
 			_nextWaypoint = _runtimeSet.waypointDelta;
-			_activeFlightPath.AddPosition(current);
+			IPathable pathable = _selected as IPathable;
+			if (!pathable.IsNull())
+			{
+				pathable.AddPathPosition(current);
+			}
 		}
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
-		_hoverTarget = other.GetComponentInParent<IDirectable>();
-		if (_hoverTarget != null && !_hoverTarget.IsNull && !_isTriggerDown)
+		_hoverTarget = other.GetComponentInParent<ISelectable>();
+		if (!_hoverTarget.IsNull() && !_isTriggerDown)
 		{
-			_hoverTarget.OnSelectionStateChanged(SelectionState.Hover);
+			_hoverTarget.OnSelectionStateChanged(SelectionState.Highlighted);
 		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (_hoverTarget != null && !_hoverTarget.IsNull)
+		ISelectable otherSelection = other.GetComponent<ISelectable>();
+		if (!_hoverTarget.IsNull())
 		{
 			if (!_isTriggerDown)
 			{
@@ -128,13 +124,17 @@ public class VRController : MonoBehaviour
 
 		// We keep track of the position we clicked and when we exit the collider we use the current 
 		// position. This is used to give us two good points.
-		if (_selected != null && !_selected.IsNull)
+		if (!_selected.IsNull())
 		{
-			if (other.transform == _selected.transform && _isAwaitingEscape)
+			if (!otherSelection.IsNull() && otherSelection == _selected)
 			{
 				_isAwaitingEscape = false;
-				_activeFlightPath.AddPosition(_triggerPressedPosition);
-				_activeFlightPath.AddPosition(_tip.position);
+				IPathable pathable = _selected as IPathable;
+				if(!pathable.IsNull())
+				{
+					pathable.AddPathPosition(_triggerPressedPosition);
+					pathable.AddPathPosition(_tip.position);
+				}
 			}
 		}
 	}
@@ -142,29 +142,40 @@ public class VRController : MonoBehaviour
 	private void OnTriggerPressed()
 	{
 		_triggerPressedPosition = _tip.position;
-		if (_hoverTarget != null && !_hoverTarget.IsNull)
+		if (!_hoverTarget.IsNull())
 		{
 			_isAwaitingEscape = true;
 			_selected = _hoverTarget;
-			_activeFlightPath = new Flightpath(_tip.position);
-			_selected.SetFlightpath(_activeFlightPath);
-			_selected.OnSelectionStateChanged(SelectionState.Select);
+
+			IPathable pathable = _selected as IPathable;
+			_hasPathableSelected = !pathable.IsNull();
+
+			// Only pathable objects can have paths 
+			if (_hasPathableSelected)
+			{
+				pathable.StartPath(_tip.position);
+			}
+
+			_selected.OnSelectionStateChanged(SelectionState.Pressed);
 		}
 	}
 
 	private void onTriggerReleased()
 	{
-		if (_selected != null && !_selected.IsNull)
+		if (!_selected.IsNull())
 		{
 			_isAwaitingEscape = false;
 			_selected.OnSelectionStateChanged(SelectionState.None);
 			_selected = null;
-            _activeFlightPath.Finialized();
-			_activeFlightPath = null;
+			IPathable pathable = _selected as IPathable;
+			if(!pathable.IsNull())
+			{
+				pathable.EndPath();
+			}
 
 			if (_hoverTarget != null)
 			{
-				_hoverTarget.OnSelectionStateChanged(SelectionState.Hover);
+				_hoverTarget.OnSelectionStateChanged(SelectionState.Highlighted);
 			}
 		}
 
