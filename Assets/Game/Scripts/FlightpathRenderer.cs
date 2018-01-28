@@ -2,38 +2,74 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
 public class FlightpathRenderer : MonoBehaviour
 {
+	[SerializeField]
+	private LineRenderer _flightpathLinePrefab;
+	private LineRenderer _flightpathLineRenderer; // Instance
+
+	[SerializeField]
+	private LineRenderer _flightpathConnectionLinePrefab;
+	private LineRenderer _flightpathConnectionLineRenderer; // Instance
+
 	private FlightController _flightController;
-	private LineRenderer _lineRenderer;
+	
+
+	GameObject _effectContainer = null;
+
+	private void OnEnable()
+	{
+		_effectContainer = new GameObject("FlightpathEffectContainer");
+		_flightpathLineRenderer = Instantiate(_flightpathLinePrefab, _effectContainer.transform);
+		_flightpathConnectionLineRenderer = Instantiate(_flightpathConnectionLinePrefab, _effectContainer.transform);
+	}
+
+	private void OnDisable()
+	{
+		DestroyObject(_effectContainer);
+		_effectContainer = null;
+		_flightpathLineRenderer = null;
+	}
 
 	private void Start()
 	{
-		_lineRenderer = GetComponent<LineRenderer>();
 		_flightController = GetComponent<FlightController>();
 	}
 
 	private void Update()
 	{
-		Flightpath flightPath = _flightController.flightpath;
+		if (_flightController == null)
+			return;
 
-		if (flightPath == null)
+		Flightpath flightPath = _flightController.flightpath;
+		LinkedListNode<Flightpath.Waypoint> currentWaypoint = _flightController.currentWaypoint;
+
+		if (flightPath == null || currentWaypoint == null || !flightPath.isUserGenerated)
 		{
-			_lineRenderer.positionCount = 0;
+			_flightpathLineRenderer.positionCount = 0;
+			_flightpathConnectionLineRenderer.positionCount = 0;
 			return;
 		}
 
-		if (flightPath.waypointCount != _lineRenderer.positionCount)
-		{
-			_lineRenderer.positionCount = flightPath.waypointCount;
-			int index = 0;
+		// Draw connecting line from plane to path
+		_flightpathConnectionLineRenderer.positionCount = 2;
+		_flightpathConnectionLineRenderer.SetPosition(0, currentWaypoint.Value.Position);
+		_flightpathConnectionLineRenderer.SetPosition(1, _flightController.transform.position);
 
-			foreach (Flightpath.Waypoint waypoint in flightPath)
-			{
-				_lineRenderer.SetPosition(index, waypoint.Position);
-				index++;
-			}
+		// Draw flight path line
+		List<Vector3> points = new List<Vector3>(flightPath.waypointCount);
+		for (LinkedListNode<Flightpath.Waypoint> wp = currentWaypoint; wp != null; wp = wp.Next)
+		{
+			points.Add(wp.Value.Position);
 		}
+
+		// Feed it the points backwards because the tiling UVs look nicer.
+		Vector3[] pointsBackwards = new Vector3[points.Count];
+		for (int i = 0; i < points.Count; i++)
+		{
+			pointsBackwards[(points.Count - 1) - i] = points[i];
+		}
+		_flightpathLineRenderer.positionCount = points.Count;
+		_flightpathLineRenderer.SetPositions(pointsBackwards);
 	}
 }

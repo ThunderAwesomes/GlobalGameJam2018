@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc010e2bba50da74a944e3258e55a255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vrControllerPrefab: {fileID: 114727997788504806, guid: 6da3e7c4db3bc0c4e89159e496b200d3,
+  _vrControllerPrefab: {fileID: 114026554136809256, guid: 093b005b6419893458e11fe67949be4b,
     type: 2}
   _type: 1
 --- !u!114 &114947983320856638

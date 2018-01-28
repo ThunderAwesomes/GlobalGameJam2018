@@ -37,7 +37,8 @@ public class PlayerTransformRuntimeSet : RuntimeSet<PlayerTransform>
 	/// </summary>
 	public Vector3 position
 	{
-		get { return _startingPosition; }
+		get { return _position; }
+		set { _position = value; }
 	}
 
 	protected override void OnEnable()

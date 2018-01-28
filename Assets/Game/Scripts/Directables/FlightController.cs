@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,6 +42,19 @@ public class FlightController : MonoBehaviour, IDirectable
 		{
 			return _flightpath;
 		}
+	}
+
+	public LinkedListNode<Flightpath.Waypoint> currentWaypoint
+	{
+		get
+		{
+			return _currentWaypoint;
+		}
+	}
+
+	public bool IsNull
+	{
+		get { return this == null; }
 	}
 
 	public void SetFlightpath(Flightpath flightpath)
@@ -208,4 +222,24 @@ public class FlightController : MonoBehaviour, IDirectable
 		}
 	}
 
+	public void OnLandingAttempted(bool wasSuccessful, LandingZone landingZone)
+	{
+		if(wasSuccessful)
+		{
+			Game.Instance.Mode.OnPlaneLanded();
+		}
+
+		foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
+		{
+			meshRenderer.material.color = wasSuccessful ? Color.green : Color.red;
+		}
+	}
+
+	private void ResetColor()
+	{
+		foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
+		{
+			meshRenderer.material.color = Color.white;
+		}
+	}
 }

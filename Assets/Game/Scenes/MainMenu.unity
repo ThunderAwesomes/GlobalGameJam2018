@@ -155,47 +155,93 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 49c846545fabfb947afdb00c10c40a2a, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &1389865924
+--- !u!1 &1014011562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1014011564}
+  - component: {fileID: 1014011563}
+  m_Layer: 0
+  m_Name: Plane Spawn Region
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1014011563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1014011562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52d621f1e1432c44a713ee6714b9ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _factory: {fileID: 11400000, guid: 5aa11197557a95e43807f6a549c4dcba, type: 2}
+  _playerTransform: {fileID: 11400000, guid: f8ba62efd4233ef49b04fd8d489cabf4, type: 2}
+  _spawnRate: 2
+  _radius: 430.3
+  _primaryTargetRadiusOffset: 1
+  _primaryTargetHeightOffset: 1
+--- !u!4 &1014011564
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1014011562}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -159, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1329684884
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4085087084799332, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
+    - target: {fileID: 4000010212820824, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2.9
+      value: -17.835524
       objectReference: {fileID: 0}
-    - target: {fileID: 4085087084799332, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
+    - target: {fileID: 4000010212820824, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.6
+      value: -0.8
       objectReference: {fileID: 0}
-    - target: {fileID: 4085087084799332, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
+    - target: {fileID: 4000010212820824, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 25.2
+      value: 70.26244
       objectReference: {fileID: 0}
-    - target: {fileID: 4085087084799332, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
+    - target: {fileID: 4000010212820824, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0.0000001862644
+      value: -0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: 4085087084799332, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
+    - target: {fileID: 4000010212820824, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 4085087084799332, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
+    - target: {fileID: 4000010212820824, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 4085087084799332, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
+    - target: {fileID: 4000010212820824, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
       propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010212820824, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
+      propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4085087084799332, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 1ea153d6db5b7e54d9390df6ef57696b, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: acf39d9f4addf294d93fa56fa373961b, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1551230796
 GameObject:
@@ -271,7 +317,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4744489654765052, guid: e065039fbe462ab4a9f3b1694d57dd7f, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 4.131177
+      value: -13.9
       objectReference: {fileID: 0}
     - target: {fileID: 4744489654765052, guid: e065039fbe462ab4a9f3b1694d57dd7f, type: 2}
       propertyPath: m_LocalPosition.y
@@ -279,7 +325,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4744489654765052, guid: e065039fbe462ab4a9f3b1694d57dd7f, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 12.066649
+      value: 43.24
       objectReference: {fileID: 0}
     - target: {fileID: 4744489654765052, guid: e065039fbe462ab4a9f3b1694d57dd7f, type: 2}
       propertyPath: m_LocalRotation.x
@@ -299,7 +345,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4744489654765052, guid: e065039fbe462ab4a9f3b1694d57dd7f, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e065039fbe462ab4a9f3b1694d57dd7f, type: 2}
@@ -341,7 +387,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4975635089014664, guid: 97fce8cf93e6a7d40a4baf7e80e62339, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1069537449726818, guid: 97fce8cf93e6a7d40a4baf7e80e62339, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 97fce8cf93e6a7d40a4baf7e80e62339, type: 2}

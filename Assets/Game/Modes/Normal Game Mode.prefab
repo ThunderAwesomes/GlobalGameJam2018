@@ -53,3 +53,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ovrManagerPrefab: {fileID: 114947983320856638, guid: 17bcbadf06e9ef041b1396f9699fd62f,
     type: 2}
+  _selectedGameModeType: 1
+  _gameModes:
+  - {fileID: 11400000, guid: 2848537fc3e4f4a4aa7fc6ea588bdb2a, type: 2}
