@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,6 +13,9 @@ public class PlaneSpawner : MonoBehaviour
 	[SerializeField]
 	private PlaneFactory _factory;
 	[SerializeField]
+	private PlayerTransformRuntimeSet _playerTransform;
+
+	[SerializeField]
 	private float _spawnRate = 2;
 	[SerializeField]
 	private float _radius = 10f;
@@ -19,6 +23,12 @@ public class PlaneSpawner : MonoBehaviour
 	private float _primaryTargetRadiusOffset = 1f;
 	[SerializeField]
 	private float _primaryTargetHeightOffset = 1f;
+
+	[Header("Player Position")]
+	private float _holdingPositionRadius = 2f;
+	private float _holdingPositionMin = 1f;
+	private float _holdingPoistionMax = 2;
+
 
 	private float _spawnTime = 3f;
 
@@ -51,6 +61,8 @@ public class PlaneSpawner : MonoBehaviour
 		heightOffset.y += _primaryTargetHeightOffset;
 		Handles.DrawWireDisc(heightOffset, Vector3.up, _radius - _primaryTargetRadiusOffset);
 		Handles.color = Color.white;
+
+
 	}
 #endif
 
@@ -63,7 +75,7 @@ public class PlaneSpawner : MonoBehaviour
 
 	private void Spawn()
 	{
-		float angle = ( (Mathf.PI * 2) * UnityEngine.Random.value);
+		float angle = ( (Mathf.PI * 2) * Random.value);
 		float sin = Mathf.Sin(angle);
 		float cos = Mathf.Cos(angle);
 
@@ -81,8 +93,17 @@ public class PlaneSpawner : MonoBehaviour
 		primaryTravelPosition.z += (_radius - _primaryTargetRadiusOffset) * cos;
 		primaryTravelPosition.y += _primaryTargetHeightOffset;
 
+		// Secondary Point
+		angle = ((Mathf.PI * 2) * Random.value);
+		Vector3 holdingPosition = _playerTransform.position;
+		float hpRadius = Random.value * _holdingPositionRadius * _playerTransform.scale;
+		sin = Mathf.Sin(angle);
+		cos = Mathf.Cos(angle);
+		holdingPosition.x += sin * hpRadius;
+		holdingPosition.z += cos * hpRadius;
+
 		Flightpath flightPath = new Flightpath(primaryTravelPosition, false);
-		flightPath.AddPosition(Vector3.zero);
+		flightPath.AddPosition(holdingPosition);
 		iDirectable.SetFlightpath(flightPath);
 	}
 }
