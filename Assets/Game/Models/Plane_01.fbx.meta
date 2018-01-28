@@ -29,6 +29,11 @@ ModelImporter:
     100042: Tail_01
     100044: Wheel
     100046: Wheels
+    100048: Head_Cockpit
+    100050: Glass_L
+    100052: Glass_R
+    100054: Main_Body
+    100056: Wheel3
     400000: Body
     400002: Body_01
     400004: FrontWing_L
@@ -53,7 +58,13 @@ ModelImporter:
     400042: Tail_01
     400044: Wheel
     400046: Wheels
+    400048: Head_Cockpit
+    400050: Glass_L
+    400052: Glass_R
+    400054: Main_Body
+    400056: Wheel3
     2100000: lambert1
+    2100002: Default_Material
     2300000: Body_01
     2300002: FrontWing_L
     2300004: FrontWing_R
@@ -70,6 +81,11 @@ ModelImporter:
     2300026: RearWing_R
     2300028: Tail_01
     2300030: Wheel
+    2300032: Head_Cockpit
+    2300034: Glass_L
+    2300036: Glass_R
+    2300038: Main_Body
+    2300040: Wheel3
     3300000: Body_01
     3300002: FrontWing_L
     3300004: FrontWing_R
@@ -86,6 +102,11 @@ ModelImporter:
     3300026: RearWing_R
     3300028: Tail_01
     3300030: Wheel
+    3300032: Head_Cockpit
+    3300034: Glass_L
+    3300036: Glass_R
+    3300038: Main_Body
+    3300040: Wheel3
     4300000: RearWing_M
     4300002: RearWing_L
     4300004: RearWing_R
@@ -102,8 +123,39 @@ ModelImporter:
     4300026: Wheel
     4300028: Body_01
     4300030: Tail_01
+    4300032: Head_Cockpit
+    4300034: Wheel3
+    4300036: Main_Body
+    4300038: Glass_R
+    4300040: Glass_L
+    6400000: Body_01
+    6400002: FrontWing_L
+    6400004: FrontWing_R
+    6400006: Head_Attachment
+    6400008: Head_Cockpit
+    6400010: Head_Engine
+    6400012: Head_Window_L
+    6400014: Head_Window_M
+    6400016: Head_Window_R
+    6400018: Propeller_01
+    6400020: Propeller_02
+    6400022: RearWing_L
+    6400024: RearWing_M
+    6400026: RearWing_R
+    6400028: Tail_01
+    6400030: Wheel
+    6400032: Glass_L
+    6400034: Glass_R
+    6400036: Main_Body
+    6400038: Wheel3
+    7400000: Take 001
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: f69b7c2fce220fc4086d6cef41a7823a, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -129,13 +181,41 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 58
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
