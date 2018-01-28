@@ -10,20 +10,27 @@ public class FeedPlaneFlightpath : MonoBehaviour
 	[SerializeField]
 	public List<GameObject> nodes;
 
-	private void Start()
+	[SerializeField]
+	private int _spawnCount;
+
+	private IEnumerator Start()
 	{
-		GameObject plane = planeFactory.CreateRandomPlane(Vector3.zero, Quaternion.identity);
-
-		IPathable pathable = plane.GetComponent<IPathable>();
-
-		if(!pathable.IsNull() && nodes.Count > 0)
+		for (int i = 0; i < _spawnCount; i++)
 		{
-			pathable.StartPath(nodes[0].transform.position);
-			for(int i = 1; i < nodes.Count; i++)
+			GameObject plane = planeFactory.CreateRandomPlane(Vector3.zero, Quaternion.identity);
+
+			IPathable pathable = plane.GetComponent<IPathable>();
+
+			if (!pathable.IsNull() && nodes.Count > 0)
 			{
-				pathable.AddPathPosition(nodes[i].transform.position);
+				pathable.StartPath(nodes[0].transform.position);
+				for (int x = 1; x < nodes.Count; x++)
+				{
+					pathable.AddPathPosition(nodes[x].transform.position);
+				}
+				pathable.EndPath();
 			}
-			pathable.EndPath();
+			yield return new WaitForSeconds(1f);
 		}
 	}
 }

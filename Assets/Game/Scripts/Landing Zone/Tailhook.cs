@@ -48,9 +48,10 @@ public class Tailhook : MonoBehaviour//, //IPathable
 	private void Awake()
 	{
 		_landingPath = new Flightpath(transform.position);
+		_landingPath.lookAheadDistance = 8f;
 		for (int i = 0; i < _pathSegements.Length; i++)
 		{
-			_landingPath.AddPosition(_pathSegements[i]);
+			_landingPath.AddPosition(_pathSegements[i] + transform.position);
 		}
 		_landingPath.drawPath = true;
 		_landingPath.disposeOnComplete = false;
@@ -65,7 +66,8 @@ public class Tailhook : MonoBehaviour//, //IPathable
 	/// <param name="iDirectable">The thing you want to land</param>
 	public void LandDirectable(IDirectable iDirectable)
 	{
-		iDirectable.AssignPath(_landingPath);
+		iDirectable.AssignPath(_landingPath, true);
+		iDirectable.isInteractable = false;
 		//_landingPath.drawPath = _landingPath.occupancy > 0;
 	}
 
