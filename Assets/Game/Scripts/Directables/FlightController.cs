@@ -90,7 +90,7 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	protected bool IsWaypointInfront(WaypointInfo info)
 	{
-		return Vector3.Dot(info.worldDirection, transform.forward) > 0.2;
+		return Vector3.Dot(info.worldDirection, transform.forward) > -0.2;
 	}
 
 	protected bool ShouldAdvanceWaypoint(WaypointInfo info)
@@ -114,8 +114,8 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	protected void AdjustForHoldingPattern()
 	{
-		_plane.targetFacing = (_holdingPatternLocation - transform.position).normalized;
-		_plane.targetUp = GetBankedUpVector(_plane.targetFacing, 5.0f, 0.5f);
+		_plane.targetFacing = Vector3.Slerp(transform.forward, (_holdingPatternLocation - transform.position).normalized, 0.2f);
+		_plane.targetUp = GetBankedUpVector(_plane.targetFacing, 3.0f, 0.2f);
 		_plane.throttle = 0.5f;
 	}
 

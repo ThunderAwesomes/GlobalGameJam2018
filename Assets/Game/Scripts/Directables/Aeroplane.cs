@@ -37,7 +37,7 @@ public class Aeroplane : MonoBehaviour
 	[SerializeField]
 	protected float _angularDrag = 0.1f;
 	[SerializeField]
-	protected float _manouverability = 5000.0f;
+	protected float turnRate = 1.0f;
 	[SerializeField]
 	protected Vector3 _axialManouverabilityMultiplier = Vector3.one;
 	[SerializeField]
@@ -98,11 +98,12 @@ public class Aeroplane : MonoBehaviour
 		// Manouvering
 		if (targetFacing != Vector3.zero)
 		{
-			_rb.AddTorque(CalculateSpringTorque(transform.forward, targetFacing, 0.4f));
-			_rb.AddTorque(CalculateSpringTorque(transform.up, targetUp, 0.4f));
+			Vector3 springTargetFacing = Vector3.Slerp(transform.forward, targetFacing, turnRate * Time.fixedDeltaTime);
 
-			//Quaternion targetRotation = Quaternion.LookRotation(targetFacing, targetUp);
-			//transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.fixedDeltaTime * _manouverability); // Hacky but works for now.
+			//transform.rotation = Quaternion.LookRotation(springTargetFacing);
+
+			_rb.AddTorque(CalculateSpringTorque(transform.forward, springTargetFacing, 1.5f));
+			_rb.AddTorque(CalculateSpringTorque(transform.up, targetUp, 0.4f));
 		}
 
 		// Drag
