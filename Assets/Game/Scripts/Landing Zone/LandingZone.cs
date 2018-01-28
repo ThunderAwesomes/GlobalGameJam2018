@@ -120,7 +120,7 @@ public class LandingZone : MonoBehaviour
 
 		if (landingNode.id == _landingNodes.Count - 1)
 		{
-			directable.OnLandingAttempted(state.isValid && !state.hitWall, this);
+			//directable.OnLandingAttempted(state.isValid && !state.hitWall, this);
 			_landingStates.Remove(state);
 		}
 	}

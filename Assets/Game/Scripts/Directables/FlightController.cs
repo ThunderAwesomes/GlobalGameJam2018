@@ -57,15 +57,7 @@ public class FlightController : MonoBehaviour, IDirectable
 		get { return this == null; }
 	}
 
-	public void SetFlightpath(Flightpath flightpath)
-	{
-		if (_flightpath != flightpath)
-		{
-			_flightpath = flightpath;
-			_navState = NavigationState.followingFlightPath;
-		}
-		_currentWaypoint = _flightpath.GetFirstWaypoint();
-	}
+
 
 	public void SetHoldingPattern(Vector3 location)
 	{
@@ -75,29 +67,9 @@ public class FlightController : MonoBehaviour, IDirectable
 		_holdingPatternLocation = transform.position;
 	}
 
-	public void OnSelectionStateChanged(VRController.SelectionState state)
+	public void OnSelectionStateChanged(SelectionState state)
 	{
-		switch (state)
-		{
-			case VRController.SelectionState.Hover:
-				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.material.color = Color.cyan;
-				}
-				break;
-			case VRController.SelectionState.Select:
-				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.material.color = Color.blue;
-				}
-				break;
-			case VRController.SelectionState.None:
-				foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
-				{
-					meshRenderer.material.color = Color.white;
-				}
-				break;
-		}
+		Tint.ByState(state, gameObject);
 	}
 	// End IDirectable Implementations
 
@@ -241,5 +213,30 @@ public class FlightController : MonoBehaviour, IDirectable
 		{
 			meshRenderer.material.color = Color.white;
 		}
+	}
+
+	public void StartPath(Vector3 position)
+	{
+		if(_flightpath != null)
+		{
+			_flightpath = new Flightpath(position);
+			_navState = NavigationState.followingFlightPath;
+		}
+		_currentWaypoint = _flightpath.GetFirstWaypoint();
+	}
+
+	public void AddPathPosition(Vector3 position)
+	{
+		_flightpath.AddPosition(position);
+	}
+
+	public void EndPath()
+	{
+		_flightpath.Finialized();
+	}
+
+	public void AssignPath(Flightpath flightpath)
+	{
+		_flightpath = flightpath;
 	}
 }
