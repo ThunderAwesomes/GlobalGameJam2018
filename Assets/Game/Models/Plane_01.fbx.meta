@@ -150,7 +150,12 @@ ModelImporter:
     6400038: Wheel3
     7400000: Take 001
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: f69b7c2fce220fc4086d6cef41a7823a, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
