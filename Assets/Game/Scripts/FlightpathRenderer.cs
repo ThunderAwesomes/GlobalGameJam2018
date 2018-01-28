@@ -58,13 +58,18 @@ public class FlightpathRenderer : MonoBehaviour
 
 		// Draw flight path line
 		List<Vector3> points = new List<Vector3>(flightPath.waypointCount);
-		int count = 0;
 		for (LinkedListNode<Flightpath.Waypoint> wp = currentWaypoint; wp != null; wp = wp.Next)
 		{
-			count++;
 			points.Add(wp.Value.Position);
 		}
+
+		// Feed it the points backwards because the tiling UVs look nicer.
+		Vector3[] pointsBackwards = new Vector3[points.Count];
+		for (int i = 0; i < points.Count; i++)
+		{
+			pointsBackwards[(points.Count - 1) - i] = points[i];
+		}
 		_flightpathLineRenderer.positionCount = points.Count;
-		_flightpathLineRenderer.SetPositions(points.ToArray());
+		_flightpathLineRenderer.SetPositions(pointsBackwards);
 	}
 }
