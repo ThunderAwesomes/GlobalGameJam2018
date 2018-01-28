@@ -40,7 +40,7 @@ public class Tailhook : MonoBehaviour, IPathable
 		{
 			_landingPath.AddPosition(_pathSegements[i]);
 		}
-		_landingPath.drawPath = false;
+		_landingPath.drawPath = true;
 		_landingPath.disposeOnComplete = false;
 		_landingPath.onPathExited += OnExitedPath;
 		_landingPath.Finialized();
@@ -54,14 +54,19 @@ public class Tailhook : MonoBehaviour, IPathable
 	public void LandDirectable(IDirectable iDirectable)
 	{
 		iDirectable.AssignPath(_landingPath);
+		//_landingPath.drawPath = _landingPath.occupancy > 0;
 	}
 
 	/// <summary>
 	/// Invoked whenever we have had a plan exit it's path
 	/// </summary>
-	private void OnExitedPath(Flightpath flightPath, IDirectable IDirectable)
+	private void OnExitedPath(Flightpath flightPath, IDirectable iDirectable)
 	{
 		flightPath.drawPath = flightPath.occupancy > 0;
+
+		Rigidbody dRigidBody = iDirectable.GetComponent<Rigidbody>();
+		dRigidBody.constraints = RigidbodyConstraints.FreezeAll;
+		Destroy((Object)iDirectable);
 	}
 
 	private void Update()
@@ -69,7 +74,7 @@ public class Tailhook : MonoBehaviour, IPathable
 		//_currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, Time.deltaTime);
 		Color color = Color.white;
 		color.a = _currentAlpha;
-		_lineRenderer.material.SetColor("_Tint", color);
+		//_lineRenderer.material.SetColor("_Tint", color);
 	}
 
 	private void UpdateLineRenderer()
@@ -95,6 +100,10 @@ public class Tailhook : MonoBehaviour, IPathable
 	public void OnSelectionStateChanged(SelectionState state)
 	{
 		Tint.ByState(state, gameObject);
+		if(state == SelectionState.Pressed)
+		{
+			//_landingPath.drawPath = true;
+		}
 	}
 
 	public void StartPath(Vector3 position)

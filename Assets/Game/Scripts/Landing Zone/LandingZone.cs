@@ -28,6 +28,8 @@ public class LandingZone : MonoBehaviour
 	private float _pathBreakSize = 0.6f;
 	[SerializeField]
 	private float _landingTimeout = 2f;
+	[SerializeField]
+	private Tailhook[] _tailsHooks;
 
 	[SerializeField]
 	private LandingWall _leftWall;
@@ -120,6 +122,11 @@ public class LandingZone : MonoBehaviour
 
 		if (landingNode.id == _landingNodes.Count - 1)
 		{
+			if(state.isValid)
+			{
+				_tailsHooks[0].LandDirectable(directable);
+			}
+
 			//directable.OnLandingAttempted(state.isValid && !state.hitWall, this);
 			_landingStates.Remove(state);
 		}

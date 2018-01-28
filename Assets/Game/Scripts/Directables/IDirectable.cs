@@ -7,5 +7,6 @@ using UnityEngine;
 public interface IDirectable : IPathable
 {
 	Flightpath flightpath { get; }
+	T GetComponent<T>();
 	void AssignPath(Flightpath flightpath);
 }
