@@ -176,9 +176,9 @@ public class FlightController : MonoBehaviour, IDirectable
 
 				if (nextWaypoint == null)
 				{
-					if (_flightpath.finalized)
+					if (_flightpath.isFinalized)
 					{
-						flightpath.consumed = true;
+						flightpath.OnPathExited(this);
 						SetHoldingPattern(transform.position);
 					}
 					return;

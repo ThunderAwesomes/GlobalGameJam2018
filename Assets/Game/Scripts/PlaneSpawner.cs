@@ -104,8 +104,9 @@ public class PlaneSpawner : MonoBehaviour
 		holdingPosition.x += sin * hpRadius;
 		holdingPosition.z += cos * hpRadius;
 
-		Flightpath flightPath = new Flightpath(primaryTravelPosition, false);
-		flightPath.AddPosition(holdingPosition);
+		Flightpath flightPath = new Flightpath(primaryTravelPosition);
+        flightPath.drawPath = false;
+        flightPath.AddPosition(holdingPosition);
 		iDirectable.SetFlightpath(flightPath);
 	}
 }

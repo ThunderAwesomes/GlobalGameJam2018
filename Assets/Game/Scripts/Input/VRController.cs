@@ -159,7 +159,7 @@ public class VRController : MonoBehaviour
 			_isAwaitingEscape = false;
 			_selected.OnSelectionStateChanged(SelectionState.None);
 			_selected = null;
-			_activeFlightPath.finalized = true;
+            _activeFlightPath.Finialized();
 			_activeFlightPath = null;
 
 			if (_hoverTarget != null)

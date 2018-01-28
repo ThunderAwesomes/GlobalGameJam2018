@@ -20,6 +20,7 @@ public class FlightpathRenderer : MonoBehaviour
 	private void OnEnable()
 	{
 		_effectContainer = new GameObject("FlightpathEffectContainer");
+		_effectContainer.transform.SetParent(transform);
 		_flightpathLineRenderer = Instantiate(_flightpathLinePrefab, _effectContainer.transform);
 		_flightpathConnectionLineRenderer = Instantiate(_flightpathConnectionLinePrefab, _effectContainer.transform);
 	}
@@ -44,7 +45,7 @@ public class FlightpathRenderer : MonoBehaviour
 		Flightpath flightPath = _flightController.flightpath;
 		LinkedListNode<Flightpath.Waypoint> currentWaypoint = _flightController.currentWaypoint;
 
-		if (flightPath == null || currentWaypoint == null || !flightPath.isUserGenerated)
+		if (flightPath == null || currentWaypoint == null || !flightPath.drawPath)
 		{
 			_flightpathLineRenderer.positionCount = 0;
 			_flightpathConnectionLineRenderer.positionCount = 0;

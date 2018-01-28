@@ -26,7 +26,7 @@ public class FeedPlaneFlightpath : MonoBehaviour
 		// Set flight controller's path.
 		plane.GetComponent<FlightController>().SetFlightpath(path);
 
-		path.finalized = true;
+		path.Finialized();
 		
 	}
 }
