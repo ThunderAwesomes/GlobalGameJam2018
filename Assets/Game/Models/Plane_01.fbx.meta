@@ -65,6 +65,7 @@ ModelImporter:
     400056: Wheel3
     2100000: lambert1
     2100002: Default_Material
+    2100004: blinn1
     2300000: Body_01
     2300002: FrontWing_L
     2300004: FrontWing_R
