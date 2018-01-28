@@ -286,6 +286,8 @@ MonoBehaviour:
   _angularDrag: 10
   _manouverability: 100
   _axialManouverabilityMultiplier: {x: 1, y: 1, z: 1}
+  _explosionEffect: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b,
+    type: 2}
 --- !u!114 &114419878291859724
 MonoBehaviour:
   m_ObjectHideFlags: 1

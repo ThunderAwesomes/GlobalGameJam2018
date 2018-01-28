@@ -23,6 +23,8 @@ public class PlaneSpawner : MonoBehaviour
 	private float _primaryTargetRadiusOffset = 1f;
 	[SerializeField]
 	private float _primaryTargetHeightOffset = 1f;
+	[SerializeField]
+	private Transform _root;
 
 	[Header("Player Position")]
 	private float _holdingPositionRadius = 2f;
@@ -55,14 +57,15 @@ public class PlaneSpawner : MonoBehaviour
 #if UNITY_EDITOR
 	private void OnDrawHandles(SceneView sceneView)
 	{
-		Handles.color = Color.green;
-		Handles.DrawWireDisc(transform.position, Vector3.up, _radius);
-		Vector3 heightOffset = transform.position;
-		heightOffset.y += _primaryTargetHeightOffset;
-		Handles.DrawWireDisc(heightOffset, Vector3.up, _radius - _primaryTargetRadiusOffset);
-		Handles.color = Color.white;
-
-
+		if (_root != null)
+		{
+			Handles.color = Color.green;
+			Handles.DrawWireDisc(_root.position, Vector3.up, _radius);
+			Vector3 heightOffset = _root.position;
+			heightOffset.y += _primaryTargetHeightOffset;
+			Handles.DrawWireDisc(heightOffset, Vector3.up, _radius - _primaryTargetRadiusOffset);
+			Handles.color = Color.white;
+		}
 	}
 #endif
 
@@ -75,20 +78,21 @@ public class PlaneSpawner : MonoBehaviour
 
 	private void Spawn()
 	{
-		float angle = ( (Mathf.PI * 2) * Random.value);
+		float angle = ((Mathf.PI * 2) * Random.value);
 		float sin = Mathf.Sin(angle);
 		float cos = Mathf.Cos(angle);
 
 		// Pick a spawn position
-		Vector3 spawnPosition = transform.position;
+		Vector3 spawnPosition = _root.position;
 		spawnPosition.x += _radius * sin;
 		spawnPosition.z += _radius * cos;
 		GameObject go = _factory.CreateRandomPlane(spawnPosition, Quaternion.identity);
+		go.transform.SetParent(_root);
 
 		// Grab our directable component
 		IDirectable iDirectable = go.GetComponent<IDirectable>();
 		// Set our primary travel position 
-		Vector3 primaryTravelPosition = transform.position;
+		Vector3 primaryTravelPosition = _root.position;
 		primaryTravelPosition.x += (_radius - _primaryTargetRadiusOffset) * sin;
 		primaryTravelPosition.z += (_radius - _primaryTargetRadiusOffset) * cos;
 		primaryTravelPosition.y += _primaryTargetHeightOffset;
