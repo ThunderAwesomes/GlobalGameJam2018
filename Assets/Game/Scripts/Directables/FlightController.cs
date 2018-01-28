@@ -52,6 +52,11 @@ public class FlightController : MonoBehaviour, IDirectable
 		}
 	}
 
+	public bool IsNull
+	{
+		get { return this == null; }
+	}
+
 	public void SetFlightpath(Flightpath flightpath)
 	{
 		if (_flightpath != flightpath)
