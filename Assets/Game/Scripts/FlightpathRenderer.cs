@@ -5,9 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class FlightpathRenderer : MonoBehaviour
 {
-	[SerializeField]
-	private FlightPathRendererRuntimeSet _runtimeSet;
-
 	private FlightController _flightController;
 	private LineRenderer _lineRenderer;
 
@@ -15,16 +12,6 @@ public class FlightpathRenderer : MonoBehaviour
 	{
 		_lineRenderer = GetComponent<LineRenderer>();
 		_flightController = GetComponent<FlightController>();
-	}
-
-	private void OnEnable()
-	{
-		_runtimeSet.Add(this);
-	}
-
-	private void OnDisable()
-	{
-		_runtimeSet.Remove(this);
 	}
 
 	private void Update()

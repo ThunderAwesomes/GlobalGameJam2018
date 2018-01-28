@@ -29,7 +29,7 @@ public class FlightController : MonoBehaviour, IDirectable
 	protected Aeroplane _plane;
 	protected Rigidbody _rb;
 
-	const bool _drawDebugInfo = true;
+	const bool _drawDebugInfo = false;
 
 	// Flight control tweakables
 	private float _lookAheadDistance = 30.0f;
@@ -50,17 +50,15 @@ public class FlightController : MonoBehaviour, IDirectable
 			_flightpath = flightpath;
 			_navState = NavigationState.followingFlightPath;
 		}
+		_currentWaypoint = _flightpath.GetFirstWaypoint();
+	}
 
-		if (_flightpath != null)
-		{
-			_currentWaypoint = _flightpath.GetFirstWaypoint();
-		}
-		else
-		{
-			_currentWaypoint = null;
-			_navState = NavigationState.holdingPattern;
-			_holdingPatternLocation = transform.position;
-		}
+	public void SetHoldingPattern(Vector3 location)
+	{
+		_flightpath = null;
+		_currentWaypoint = null;
+		_navState = NavigationState.holdingPattern;
+		_holdingPatternLocation = transform.position;
 	}
 
 	public void OnSelectionStateChanged(VRController.SelectionState state)
@@ -166,8 +164,8 @@ public class FlightController : MonoBehaviour, IDirectable
 				{
 					if (_flightpath.finalized)
 					{
-					  flightpath.consumed = true;
-						SetFlightpath(null);
+						flightpath.consumed = true;
+						SetHoldingPattern(transform.position);
 					}
 					return;
 				}
