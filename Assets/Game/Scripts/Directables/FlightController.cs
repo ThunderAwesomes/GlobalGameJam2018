@@ -224,6 +224,11 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	public void OnLandingAttempted(bool wasSuccessful, LandingZone landingZone)
 	{
+		if(wasSuccessful)
+		{
+			Game.Instance.Mode.OnPlaneLanded();
+		}
+
 		foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
 		{
 			meshRenderer.material.color = wasSuccessful ? Color.green : Color.red;

@@ -86,7 +86,7 @@ public class VRController : MonoBehaviour
 		}
 		_wasTriggerDown = _isTriggerDown;
 
-		if (_isTriggerDown && !_selected.IsNull)
+		if (_isTriggerDown && _selected != null && !_selected.IsNull)
 		{
 			UpdateFlightPath(_previousPosition, _tip.position);
 		}
@@ -128,7 +128,7 @@ public class VRController : MonoBehaviour
 
 		// We keep track of the position we clicked and when we exit the collider we use the current 
 		// position. This is used to give us two good points.
-		if (!_selected.IsNull)
+		if (_selected != null && !_selected.IsNull)
 		{
 			if (other.transform == _selected.transform && _isAwaitingEscape)
 			{
@@ -142,7 +142,7 @@ public class VRController : MonoBehaviour
 	private void OnTriggerPressed()
 	{
 		_triggerPressedPosition = _tip.position;
-		if (!_hoverTarget.IsNull)
+		if (_hoverTarget != null && !_hoverTarget.IsNull)
 		{
 			_isAwaitingEscape = true;
 			_selected = _hoverTarget;
