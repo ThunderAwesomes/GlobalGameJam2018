@@ -22,7 +22,7 @@ public class GameMode : MonoBehaviour
         CreateInputManager();
     }
 
-    public void EndMode()
+	public void EndMode()
     {
         if(_ovrManager != null)
         {

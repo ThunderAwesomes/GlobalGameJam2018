@@ -39,11 +39,13 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	private LinkedList<Waypoint> _waypoints = new LinkedList<Waypoint>();
 	public bool finalized { get; set; }
 	public bool consumed { get; set; }
+	public bool isUserGenerated { get; protected set; }
 
-	public Flightpath(Vector3 startPosition)
+	public Flightpath(Vector3 startPosition, bool isUserGenerated = true)
 	{
 		Waypoint firstWaypoint = new Waypoint(startPosition);
 		_waypoints.AddFirst(firstWaypoint);
+		this.isUserGenerated = isUserGenerated;
 	}
 
 	public void AddPosition(Vector3 position)

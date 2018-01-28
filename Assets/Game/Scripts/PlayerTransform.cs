@@ -23,6 +23,8 @@ public class PlayerTransform : MonoBehaviour
 	private void Update()
 	{
 		_runtimeSet.playerHeight = _trackerAnchor.position.y + transform.lossyScale.y;
+		_runtimeSet.position = _trackerAnchor.position;
+		_runtimeSet.position.Scale(transform.lossyScale);
 	}
 
 	public void Reset()

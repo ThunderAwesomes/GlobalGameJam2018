@@ -17,8 +17,6 @@ public class VRController : MonoBehaviour
 	private bool _isTriggerDown;
 	private bool _wasTriggerDown;
 	private bool _isAwaitingEscape;
-	private int _lastLandingTargetHit = -1;
-	private int _sequentialLandingTargetsHit = 0;
 	private Vector3 _triggerPressedPosition;
 
 	private IDirectable _selected;
@@ -115,60 +113,6 @@ public class VRController : MonoBehaviour
 		{
 			_hoverTarget.OnSelectionStateChanged(SelectionState.Hover);
 		}
-
-		if (_selected != null)
-		{
-			HandleLandingPlatform(other);
-		}
-	}
-
-	private void HandleLandingPlatform(Collider other)
-	{
-		bool comboEnded = false;
-		LandingNode node = other.GetComponent<LandingNode>();
-
-		if (other.CompareTag("LandingWall"))
-		{
-			comboEnded = true;
-		}
-		else if (node != null)
-		{
-			if (_lastLandingTargetHit == -1)
-			{
-				_lastLandingTargetHit = node.id;
-				_sequentialLandingTargetsHit = 0;
-			}
-			else
-			{
-				comboEnded = _lastLandingTargetHit != node.id - 1 &&
-							_lastLandingTargetHit != node.id + 1;
-
-				if (!comboEnded)
-				{
-					_sequentialLandingTargetsHit++;
-					_lastLandingTargetHit = node.id;
-				}
-			}
-		}
-
-		if (comboEnded && _sequentialLandingTargetsHit > 0)
-		{
-			OnSequentialLandingNodesHit();
-
-		}
-	}
-
-	private void OnSequentialLandingNodesHit()
-	{
-		_lastLandingTargetHit = -1;
-		_sequentialLandingTargetsHit = -1;
-
-		// Release trigger
-		_isAwaitingEscape = false;
-		_selected.OnSelectionStateChanged(SelectionState.None);
-		_selected = null;
-		_activeFlightPath.finalized = true;
-		_activeFlightPath = null;
 	}
 
 	private void OnTriggerExit(Collider other)

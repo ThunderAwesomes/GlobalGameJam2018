@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -208,4 +209,19 @@ public class FlightController : MonoBehaviour, IDirectable
 		}
 	}
 
+	public void OnLandingAttempted(bool wasSuccessful, LandingZone landingZone)
+	{
+		foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
+		{
+			meshRenderer.material.color = wasSuccessful ? Color.green : Color.red;
+		}
+	}
+
+	private void ResetColor()
+	{
+		foreach (MeshRenderer meshRenderer in GetComponentsInChildren<MeshRenderer>())
+		{
+			meshRenderer.material.color = Color.white;
+		}
+	}
 }

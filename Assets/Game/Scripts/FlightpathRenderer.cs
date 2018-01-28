@@ -18,7 +18,7 @@ public class FlightpathRenderer : MonoBehaviour
 	{
 		Flightpath flightPath = _flightController.flightpath;
 
-		if (flightPath == null)
+		if (flightPath == null || !flightPath.isUserGenerated)
 		{
 			_lineRenderer.positionCount = 0;
 			return;
