@@ -80,10 +80,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52d621f1e1432c44a713ee6714b9ce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _factory: {fileID: 11400000, guid: 5aa11197557a95e43807f6a549c4dcba, type: 2}
+  _factory: {fileID: 11400000, guid: 354a5f6b1d3fa55468928929c721619b, type: 2}
   _playerTransform: {fileID: 11400000, guid: f8ba62efd4233ef49b04fd8d489cabf4, type: 2}
   _spawnRate: 2
-  _radius: 461.3
-  _primaryTargetRadiusOffset: 188.29
-  _primaryTargetHeightOffset: 185.8
+  _radius: 1116.5
+  _primaryTargetRadiusOffset: 189.71
+  _primaryTargetHeightOffset: 317.3
   _root: {fileID: 4364481869625794}

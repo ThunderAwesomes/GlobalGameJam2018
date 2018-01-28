@@ -25,6 +25,17 @@ public abstract class GameMode : ScriptableObject
 		get;
 	}
 
+	public int planesLost
+	{
+		get { return _planesLost; }
+	}
+
+	public int planesLanded
+	{
+		get { return _planesLanded; }
+	}
+	
+
 	public virtual void OnPlaneDestroyed()
 	{
 		_planesLost++;

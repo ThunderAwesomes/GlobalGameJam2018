@@ -17,6 +17,12 @@ public class TimedGameMode : GameMode
 		get { return Type.Timed; }
 	}
 
+	public float timeLeft
+	{
+		get { return _gameTime;  }
+	}
+	
+
 	public override void OnGameStarted()
 	{
 		base.OnGameStarted();

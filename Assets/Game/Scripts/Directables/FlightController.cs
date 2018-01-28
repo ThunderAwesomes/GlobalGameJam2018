@@ -29,7 +29,7 @@ public class FlightController : MonoBehaviour, IDirectable
 	protected LinkedListNode<Flightpath.Waypoint> _currentWaypoint;
 	protected Aeroplane _plane;
 	protected Rigidbody _rb;
-	protected bool _isInteractable; 
+	protected bool _isInteractable;
 
 	const bool _drawDebugInfo = false;
 
@@ -101,7 +101,7 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	protected bool ShouldAdvanceWaypoint(WaypointInfo info)
 	{
-		return IsWaypointInfront(info) && (info.distance < _flightpath.lookAheadDistance );
+		return IsWaypointInfront(info) && (info.distance < _flightpath.lookAheadDistance);
 	}
 
 	protected Vector3 GetBankedUpVector(Vector3 targetVector, float sensitivity, float maxBank)
@@ -202,7 +202,7 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	public void OnLandingAttempted(bool wasSuccessful, LandingZone landingZone)
 	{
-		if(wasSuccessful)
+		if (wasSuccessful)
 		{
 			Game.Instance.Mode.OnPlaneLanded();
 		}
@@ -223,11 +223,8 @@ public class FlightController : MonoBehaviour, IDirectable
 
 	public void StartPath(Vector3 position)
 	{
-		if(_flightpath == null)
-		{
-			_flightpath = new Flightpath(position);
-			_navState = NavigationState.followingFlightPath;
-		}
+		_flightpath = new Flightpath(position);
+		_navState = NavigationState.followingFlightPath;
 		_currentWaypoint = _flightpath.GetFirstWaypoint();
 	}
 
@@ -245,7 +242,7 @@ public class FlightController : MonoBehaviour, IDirectable
 	public void AssignPath(Flightpath flightpath, bool startFollowing)
 	{
 		_flightpath = flightpath;
-		if(startFollowing)
+		if (startFollowing)
 		{
 			_navState = NavigationState.followingFlightPath;
 			_currentWaypoint = _flightpath.GetFirstWaypoint();
