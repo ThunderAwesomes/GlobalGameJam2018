@@ -56,6 +56,7 @@ ModelImporter:
     400046: Wheels
     400048: Head_Cockpit
     2100000: lambert1
+    2100002: Default_Material
     2300000: Body_01
     2300002: FrontWing_L
     2300004: FrontWing_R
@@ -107,6 +108,23 @@ ModelImporter:
     4300028: Body_01
     4300030: Tail_01
     4300032: Head_Cockpit
+    6400000: Body_01
+    6400002: FrontWing_L
+    6400004: FrontWing_R
+    6400006: Head_Attachment
+    6400008: Head_Cockpit
+    6400010: Head_Engine
+    6400012: Head_Window_L
+    6400014: Head_Window_M
+    6400016: Head_Window_R
+    6400018: Propeller_01
+    6400020: Propeller_02
+    6400022: RearWing_L
+    6400024: RearWing_M
+    6400026: RearWing_R
+    6400028: Tail_01
+    6400030: Wheel
+    7400000: Take 001
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -134,13 +152,41 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 58
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
