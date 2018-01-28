@@ -9,12 +9,6 @@ public class PlayerTransform : MonoBehaviour
 	[SerializeField]
 	private Transform _trackerAnchor;
 
-	public float height
-	{
-		get { return _trackerAnchor.position.y * transform.lossyScale.y; }
-	}
-
-
 	private void OnEnable()
 	{
 		_runtimeSet.Add(this);
@@ -26,9 +20,9 @@ public class PlayerTransform : MonoBehaviour
 		_runtimeSet.Remove(this);
 	}
 
-	private void OnGUI()
+	private void Update()
 	{
-		GUILayout.Label("Height: " + height, GUI.skin.box);
+		_runtimeSet.playerHeight = _trackerAnchor.position.y + transform.lossyScale.y;
 	}
 
 	public void Reset()

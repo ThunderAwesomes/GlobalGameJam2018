@@ -11,16 +11,17 @@ public class PlayerTransformRuntimeSet : RuntimeSet<PlayerTransform>
 	[SerializeField]
 	private Vector3 _startingPosition = Vector3.zero;
 
-	private float _height;
+	private float _playerHeight;
 	private float _scale;
 	private Vector3 _position;
 
 	/// <summary>
 	/// Returns the height of the player.
 	/// </summary>
-	public float height
+	public float playerHeight
 	{
-		get { return _height; }
+		get { return _playerHeight; }
+		set { _playerHeight = value; }
 	}
 
 	/// <summary>

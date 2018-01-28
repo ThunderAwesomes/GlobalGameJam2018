@@ -102,9 +102,9 @@ public class FlightController : MonoBehaviour, IDirectable
 		return info;
 	}
 
-	protected Vector3 GetGravityDirection()
+	protected Vector3 GetUpDirection()
 	{
-		return Vector3.down;
+		return Vector3.up;
 	}
 
 	protected bool IsWaypointInfront(WaypointInfo info)
@@ -117,18 +117,24 @@ public class FlightController : MonoBehaviour, IDirectable
 		return IsWaypointInfront(info) && (info.distance < _lookAheadDistance);
 	}
 
+	protected Vector3 GetBankedUpVector(Vector3 targetVector, float sensitivity, float maxBank)
+	{
+		Vector3 right = Vector3.Cross(transform.forward, GetUpDirection());
+		float bankAmmount = Mathf.Clamp(Vector3.Dot(targetVector, right) * sensitivity, -1.0f, 1.0f);
+		return Vector3.SlerpUnclamped(GetUpDirection(), right, bankAmmount * Mathf.Clamp01(maxBank));
+	}
+
 	protected void AdjustForWaypoint(WaypointInfo info)
 	{
 		_plane.targetFacing = info.worldDirection;
-		_plane.targetUp = -GetGravityDirection();
-
-		// TODO: Adjust plane controls to fly towards waypoint
+		_plane.targetUp = GetBankedUpVector(_plane.targetFacing, 5.0f, 0.5f);
 		_plane.throttle = 1.0f;
 	}
 
 	protected void AdjustForHoldingPattern()
 	{
 		_plane.targetFacing = (_holdingPatternLocation - transform.position).normalized;
+		_plane.targetUp = GetBankedUpVector(_plane.targetFacing, 5.0f, 0.5f);
 		_plane.throttle = 0.5f;
 	}
 
