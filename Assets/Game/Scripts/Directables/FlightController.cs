@@ -25,7 +25,6 @@ public class FlightController : MonoBehaviour, IDirectable
 	protected NavigationState _navState;
 	protected Flightpath _flightpath;
 	protected Vector3 _holdingPatternLocation;
-	protected FlightpathRenderer _flightpathRenderer;
 	protected LinkedListNode<Flightpath.Waypoint> _currentWaypoint;
 	protected Aeroplane _plane;
 	protected Rigidbody _rb;
@@ -49,7 +48,6 @@ public class FlightController : MonoBehaviour, IDirectable
 		if (_flightpath != flightpath)
 		{
 			_flightpath = flightpath;
-			_flightpathRenderer.SetFlightPath(_flightpath);
 			_navState = NavigationState.followingFlightPath;
 		}
 
@@ -59,7 +57,6 @@ public class FlightController : MonoBehaviour, IDirectable
 		}
 		else
 		{
-			_flightpathRenderer.ClearFlightPath();
 			_currentWaypoint = null;
 			_navState = NavigationState.holdingPattern;
 			_holdingPatternLocation = transform.position;
@@ -142,7 +139,6 @@ public class FlightController : MonoBehaviour, IDirectable
 	{
 		_plane = GetComponent<Aeroplane>();
 		_rb = GetComponent<Rigidbody>();
-		_flightpathRenderer = GetComponent<FlightpathRenderer>();
 	}
 
 	private void Update()

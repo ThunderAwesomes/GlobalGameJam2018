@@ -8,23 +8,17 @@ public class FlightpathRenderer : MonoBehaviour
 	[SerializeField]
 	private FlightPathRendererRuntimeSet _runtimeSet;
 
-	private Flightpath _flightPath;
+	private FlightController _flightController;
 	private LineRenderer _lineRenderer;
 
-	public void SetFlightPath(Flightpath flightPath)
+	private void Start()
 	{
-		_flightPath = flightPath;
-	}
-
-	public void ClearFlightPath()
-	{
-		_flightPath = null;
-		_lineRenderer.positionCount = 0;
+		_lineRenderer = GetComponent<LineRenderer>();
+		_flightController = GetComponent<FlightController>();
 	}
 
 	private void OnEnable()
 	{
-		_lineRenderer = GetComponent<LineRenderer>();
 		_runtimeSet.Add(this);
 	}
 
@@ -35,23 +29,23 @@ public class FlightpathRenderer : MonoBehaviour
 
 	private void Update()
 	{
-		if (_flightPath != null)
-		{
-			if (_flightPath.waypointCount != _lineRenderer.positionCount)
-			{
-				_lineRenderer.positionCount = _flightPath.waypointCount;
-				int index = 0;
+		Flightpath flightPath = _flightController.flightpath;
 
-				foreach (Flightpath.Waypoint waypoint in _flightPath)
-				{
-					_lineRenderer.SetPosition(index, waypoint.Position);
-					index++;
-				}
-			}
-			if (_flightPath.consumed)
+		if (flightPath == null)
+		{
+			_lineRenderer.positionCount = 0;
+			return;
+		}
+
+		if (flightPath.waypointCount != _lineRenderer.positionCount)
+		{
+			_lineRenderer.positionCount = flightPath.waypointCount;
+			int index = 0;
+
+			foreach (Flightpath.Waypoint waypoint in flightPath)
 			{
-				_flightPath = null;
-				_lineRenderer.positionCount = 0;
+				_lineRenderer.SetPosition(index, waypoint.Position);
+				index++;
 			}
 		}
 	}
