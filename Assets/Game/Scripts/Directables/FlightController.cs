@@ -44,6 +44,14 @@ public class FlightController : MonoBehaviour, IDirectable
 		}
 	}
 
+	public LinkedListNode<Flightpath.Waypoint> currentWaypoint
+	{
+		get
+		{
+			return _currentWaypoint;
+		}
+	}
+
 	public void SetFlightpath(Flightpath flightpath)
 	{
 		if (_flightpath != flightpath)

@@ -41,6 +41,9 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	public bool consumed { get; set; }
 	public bool isUserGenerated { get; protected set; }
 
+	public int GetSourcePointCount() { return _sourcePoints.Count; }
+	public Vector3 GetSourcePoint(int i) { return _sourcePoints[i]; }
+
 	public Flightpath(Vector3 startPosition, bool isUserGenerated = true)
 	{
 		Waypoint firstWaypoint = new Waypoint(startPosition);
