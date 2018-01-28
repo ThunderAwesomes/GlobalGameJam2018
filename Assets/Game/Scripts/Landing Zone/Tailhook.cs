@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class Tailhook : MonoBehaviour, IPathable
+public class Tailhook : MonoBehaviour//, //IPathable
 {
 	[SerializeField]
 	private Vector3[] _pathSegements;
@@ -32,9 +32,21 @@ public class Tailhook : MonoBehaviour, IPathable
 		}
 	}
 
+	public LineRenderer lineRenderer
+	{
+		get
+		{
+			if (_lineRenderer == null)
+			{
+				_lineRenderer = GetComponent<LineRenderer>();
+				_lineRenderer.useWorldSpace = false;
+			}
+			return _lineRenderer;
+		}
+	}
+
 	private void Awake()
 	{
-		_lineRenderer = GetComponent<LineRenderer>();
 		_landingPath = new Flightpath(transform.position);
 		for (int i = 0; i < _pathSegements.Length; i++)
 		{
@@ -79,15 +91,10 @@ public class Tailhook : MonoBehaviour, IPathable
 
 	private void UpdateLineRenderer()
 	{
-		if (_lineRenderer.positionCount != _landingPath.count)
+		lineRenderer.positionCount = _pathSegements.Length;
+		for (int i = 0; i < lineRenderer.positionCount; i++)
 		{
-			_lineRenderer.positionCount = _landingPath.count;
-			_pathSegements = new Vector3[_landingPath.count];
-			for (int i = 0; i < _lineRenderer.positionCount; i++)
-			{
-				_pathSegements[i] = _landingPath[i];
-				_lineRenderer.SetPosition(i, _landingPath[i]);
-			}
+			lineRenderer.SetPosition(i, _pathSegements[i]);
 		}
 	}
 
@@ -100,7 +107,7 @@ public class Tailhook : MonoBehaviour, IPathable
 	public void OnSelectionStateChanged(SelectionState state)
 	{
 		Tint.ByState(state, gameObject);
-		if(state == SelectionState.Pressed)
+		if (state == SelectionState.Pressed)
 		{
 			//_landingPath.drawPath = true;
 		}
@@ -121,5 +128,10 @@ public class Tailhook : MonoBehaviour, IPathable
 	public void EndPath()
 	{
 		_landingPath.Finialized();
+	}
+
+	private void OnValidate()
+	{
+		UpdateLineRenderer();
 	}
 }
