@@ -29,6 +29,7 @@ ModelImporter:
     100042: Tail_01
     100044: Wheel
     100046: Wheels
+    100048: Head_Cockpit
     400000: Body
     400002: Body_01
     400004: FrontWing_L
@@ -53,6 +54,7 @@ ModelImporter:
     400042: Tail_01
     400044: Wheel
     400046: Wheels
+    400048: Head_Cockpit
     2100000: lambert1
     2300000: Body_01
     2300002: FrontWing_L
@@ -70,6 +72,7 @@ ModelImporter:
     2300026: RearWing_R
     2300028: Tail_01
     2300030: Wheel
+    2300032: Head_Cockpit
     3300000: Body_01
     3300002: FrontWing_L
     3300004: FrontWing_R
@@ -86,6 +89,7 @@ ModelImporter:
     3300026: RearWing_R
     3300028: Tail_01
     3300030: Wheel
+    3300032: Head_Cockpit
     4300000: RearWing_M
     4300002: RearWing_L
     4300004: RearWing_R
@@ -102,6 +106,7 @@ ModelImporter:
     4300026: Wheel
     4300028: Body_01
     4300030: Tail_01
+    4300032: Head_Cockpit
     9500000: //RootNode
   externalObjects: {}
   materials:
