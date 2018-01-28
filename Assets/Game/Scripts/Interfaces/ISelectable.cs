@@ -12,5 +12,6 @@ public enum SelectionState
 
 public interface ISelectable : IUnityObject
 {
+	bool isInteractable { get; set; }
 	void OnSelectionStateChanged(SelectionState newState);
 }

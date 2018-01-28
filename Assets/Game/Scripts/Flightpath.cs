@@ -45,6 +45,7 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	private bool _isFinalized;
 	private bool _disposeOnComplete;
 	private int _occupancy;
+	private float _lookAheadDistance = 30f;
 	private event DirectableDelegate _onPathStarted;
 	private event DirectableDelegate _onPathExited;
 	private event FlightPathDelegate _onPathFinalized;
@@ -53,6 +54,12 @@ public sealed class Flightpath : IEnumerable<Flightpath.Waypoint>
 	{
 		get { return _drawPath; }
 		set { _drawPath = value; }
+	}
+
+	public float lookAheadDistance
+	{
+		get { return _lookAheadDistance; }
+		set { _lookAheadDistance = value; }
 	}
 
 	public int occupancy

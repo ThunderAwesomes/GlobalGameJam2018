@@ -83,7 +83,10 @@ public class Aeroplane : MonoBehaviour
 			GameObject explosion = Instantiate(_explosionEffect);
 			explosion.transform.position = transform.position;
 			Destroy(explosion, 1.0f);
-			Game.Instance.Mode.OnPlaneDestroyed();
+			if (Game.Instance != null)
+			{
+				Game.Instance.Mode.OnPlaneDestroyed();
+			}
 		}
 		Destroy(gameObject);
 	}

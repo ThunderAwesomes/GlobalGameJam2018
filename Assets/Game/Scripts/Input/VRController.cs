@@ -104,36 +104,42 @@ public class VRController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		_hoverTarget = other.GetComponentInParent<ISelectable>();
-		if (!_hoverTarget.IsNull() && !_isTriggerDown)
+		if (_hoverTarget.isInteractable)
 		{
-			_hoverTarget.OnSelectionStateChanged(SelectionState.Highlighted);
+			if (!_hoverTarget.IsNull() && !_isTriggerDown)
+			{
+				_hoverTarget.OnSelectionStateChanged(SelectionState.Highlighted);
+			}
 		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
 		ISelectable otherSelection = other.GetComponent<ISelectable>();
-		if (!_hoverTarget.IsNull())
+		if (otherSelection.isInteractable)
 		{
-			if (!_isTriggerDown)
+			if (!_hoverTarget.IsNull())
 			{
-				_hoverTarget.OnSelectionStateChanged(SelectionState.None);
-			}
-			_hoverTarget = null;
-		}
-
-		// We keep track of the position we clicked and when we exit the collider we use the current 
-		// position. This is used to give us two good points.
-		if (!_selected.IsNull())
-		{
-			if (!otherSelection.IsNull() && otherSelection == _selected)
-			{
-				_isAwaitingEscape = false;
-				IPathable pathable = _selected as IPathable;
-				if(!pathable.IsNull())
+				if (!_isTriggerDown)
 				{
-					pathable.AddPathPosition(_triggerPressedPosition);
-					pathable.AddPathPosition(_tip.position);
+					_hoverTarget.OnSelectionStateChanged(SelectionState.None);
+				}
+				_hoverTarget = null;
+			}
+
+			// We keep track of the position we clicked and when we exit the collider we use the current 
+			// position. This is used to give us two good points.
+			if (!_selected.IsNull())
+			{
+				if (!otherSelection.IsNull() && otherSelection == _selected)
+				{
+					_isAwaitingEscape = false;
+					IPathable pathable = _selected as IPathable;
+					if (!pathable.IsNull())
+					{
+						pathable.AddPathPosition(_triggerPressedPosition);
+						pathable.AddPathPosition(_tip.position);
+					}
 				}
 			}
 		}
@@ -168,7 +174,7 @@ public class VRController : MonoBehaviour
 			_selected.OnSelectionStateChanged(SelectionState.None);
 			_selected = null;
 			IPathable pathable = _selected as IPathable;
-			if(!pathable.IsNull())
+			if (!pathable.IsNull())
 			{
 				pathable.EndPath();
 			}
